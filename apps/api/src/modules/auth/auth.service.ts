@@ -48,4 +48,14 @@ export class AuthService {
     const accessToken = await this.jwt.signAsync({ sub: user.id, role: user.role });
     return { accessToken };
   }
+
+  async refreshWithToken(refreshToken: string) {
+    try {
+      const payload = await this.jwt.verifyAsync(refreshToken, { secret: process.env.JWT_SECRET || 'dev-secret' });
+      if (payload?.type !== 'refresh') throw new UnauthorizedException('نامعتبر');
+      return this.refresh(payload.sub, refreshToken);
+    } catch {
+      throw new UnauthorizedException('نامعتبر');
+    }
+  }
 }

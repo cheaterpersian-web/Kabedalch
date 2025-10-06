@@ -1,13 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
 import { CryptoService } from '../common/crypto.service';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class TestimonialsService {
-  constructor(private prisma: PrismaService, private crypto: CryptoService) {}
+  constructor(private prisma: PrismaService, private crypto: CryptoService, private settings: SettingsService) {}
 
-  listApproved() {
-    return this.prisma.testimonial.findMany({ where: { approved: true }, orderBy: { createdAt: 'desc' } });
+  async listApproved() {
+    const showFullPhone = !!(await this.settings.get('testimonials.showFullPhone'));
+    const list = await this.prisma.testimonial.findMany({ where: { approved: true }, orderBy: { createdAt: 'desc' } });
+    if (!showFullPhone) return list;
+    return list.map((t) => ({
+      ...t,
+      phoneFull: t.phoneFullEncrypted ? this.crypto.decrypt(t.phoneFullEncrypted) : null,
+    }));
   }
 
   async submit(input: { userName: string; phone: string; message: string; imageBeforeUrl?: string; imageAfterUrl?: string }) {

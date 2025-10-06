@@ -81,4 +81,8 @@ export class TestsService {
       resultId: result.id,
     };
   }
+
+  resultsForUser(userId: string) {
+    return this.prisma.testResult.findMany({ where: { userId }, orderBy: { createdAt: 'desc' } });
+  }
 }

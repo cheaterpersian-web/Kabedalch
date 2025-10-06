@@ -16,6 +16,10 @@ class LoginDto {
   password!: string;
 }
 
+class RefreshDto {
+  refreshToken!: string;
+}
+
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -33,5 +37,12 @@ export class AuthController {
   @RateLimit(10, 60)
   login(@Body() dto: LoginDto) {
     return this.auth.login(dto.email, dto.password);
+  }
+
+  @Post('refresh')
+  @UseGuards(RateLimitGuard)
+  @RateLimit(20, 60)
+  refresh(@Body() dto: RefreshDto) {
+    return this.auth.refreshWithToken(dto.refreshToken);
   }
 }
