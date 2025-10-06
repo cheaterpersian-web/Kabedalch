@@ -19,4 +19,12 @@ export class OrdersService {
     // TODO: integrate gateway (Zarinpal, etc.) and return payment_url
     return { id: order.id, payment_url: `https://example-gateway/pay/${order.id}` };
   }
+
+  getById(id: string) {
+    return this.prisma.order.findUnique({ where: { id } });
+  }
+
+  listByUser(userId: string) {
+    return this.prisma.order.findMany({ where: { userId }, orderBy: { createdAt: 'desc' } });
+  }
 }

@@ -11,6 +11,7 @@ import { WebhooksModule } from './webhooks/webhooks.module';
 import { ConsultationsModule } from './consultations/consultations.module';
 import { AdminModule } from './admin/admin.module';
 import { UploadsModule } from './uploads/uploads.module';
+import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/jwt-auth.guard';
 import { HealthController } from './health.controller';
@@ -33,6 +34,7 @@ import { HealthController } from './health.controller';
     ConsultationsModule,
     AdminModule,
     UploadsModule,
+    UsersModule,
   ],
   controllers: [HealthController],
   providers: [
