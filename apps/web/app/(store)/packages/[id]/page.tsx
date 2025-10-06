@@ -11,8 +11,7 @@ export default async function PackageDetail({ params }: { params: { id: string }
       <h1 className="text-2xl font-bold">{p.title}</h1>
       <p>{p.description}</p>
       <div className="text-primary">{p.priceIRR?.toLocaleString('fa-IR')} تومان</div>
-      <form action="/checkout" method="GET" className="space-x-2">
-        <input type="hidden" name="packageId" value={p.id} />
+      <form action="/cart" method="GET" className="space-x-2" onSubmit={(e)=>{ if (typeof window!== 'undefined'){ localStorage.setItem('cart:packageId', p.id); } }}>
         <button className="bg-green-600 text-white px-4 py-2 rounded">افزودن به سبد و ادامه</button>
       </form>
     </div>

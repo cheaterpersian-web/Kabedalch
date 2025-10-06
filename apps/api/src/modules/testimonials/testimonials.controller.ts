@@ -16,7 +16,10 @@ export class TestimonialsController {
   @Post()
   @UseGuards(RateLimitGuard)
   @RateLimit(5, 60)
-  submit(@Body() body: { userName: string; phone: string; message: string; imageBeforeUrl?: string; imageAfterUrl?: string }) {
+  submit(
+    @Body()
+    body: { userName: string; phone: string; message: string; imageBeforeUrl?: string; imageAfterUrl?: string; hcaptchaToken?: string },
+  ) {
     return this.service.submit(body);
   }
 }

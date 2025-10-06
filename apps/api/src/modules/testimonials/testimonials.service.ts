@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
 import { CryptoService } from '../common/crypto.service';
 import { SettingsService } from '../settings/settings.service';
+import { verifyHCaptcha } from '../common/hcaptcha';
 
 @Injectable()
 export class TestimonialsService {
@@ -17,7 +18,9 @@ export class TestimonialsService {
     }));
   }
 
-  async submit(input: { userName: string; phone: string; message: string; imageBeforeUrl?: string; imageAfterUrl?: string }) {
+  async submit(input: { userName: string; phone: string; message: string; imageBeforeUrl?: string; imageAfterUrl?: string; hcaptchaToken?: string }) {
+    const ok = await verifyHCaptcha(input.hcaptchaToken);
+    if (!ok) return { ok: false, error: 'captcha' };
     const phoneMasked = this.maskPhone(input.phone);
     const phoneFullEncrypted = input.phone ? this.crypto.encrypt(input.phone) : undefined;
     const t = await this.prisma.testimonial.create({

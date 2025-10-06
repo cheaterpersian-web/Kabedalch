@@ -2,7 +2,7 @@ import './globals.css';
 import type { ReactNode } from 'react';
 import { Vazirmatn } from 'next/font/google';
 import Seo from '../components/Seo';
-import GA from '../components/GA';
+import Analytics from '../components/Analytics';
 
 const vazir = Vazirmatn({ subsets: ['arabic'], variable: '--font-vazir' });
 
@@ -12,7 +12,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head />
       <body className={`${vazir.variable} font-vazir bg-white text-gray-900`}>
         <Seo />
-        <GA />
+        <Analytics />
         <header className="border-b">
           <nav className="container py-3 flex gap-4">
             <a href="/" className="font-bold">خانه</a>
@@ -20,6 +20,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <a href="/packages">پکیج‌ها</a>
             <a href="/testimonials">رضایت مراجعین</a>
             <a href="/consultation">مشاوره</a>
+            <a href="/blog">بلاگ</a>
+            <a href="/cart">سبد خرید</a>
             <span className="ml-auto" />
             <a href="/login">ورود</a>
             <a href="/register">ثبت‌نام</a>
