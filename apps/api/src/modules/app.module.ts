@@ -9,6 +9,8 @@ import { PostsModule } from './posts/posts.module';
 import { SettingsModule } from './settings/settings.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 import { ConsultationsModule } from './consultations/consultations.module';
+import { AdminModule } from './admin/admin.module';
+import { UploadsModule } from './uploads/uploads.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/jwt-auth.guard';
 import { HealthController } from './health.controller';
@@ -29,6 +31,8 @@ import { HealthController } from './health.controller';
     SettingsModule,
     WebhooksModule,
     ConsultationsModule,
+    AdminModule,
+    UploadsModule,
   ],
   controllers: [HealthController],
   providers: [
@@ -37,5 +41,6 @@ import { HealthController } from './health.controller';
       useClass: JwtAuthGuard,
     },
   ],
+  controllers: [HealthController],
 })
 export class AppModule {}
