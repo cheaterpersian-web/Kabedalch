@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import HCaptcha from '../../../components/HCaptcha';
 
 export default function SubmitTestimonialPage() {
   const [state, setState] = useState<'idle'|'up'|'done'|'err'>('idle');
@@ -49,6 +50,7 @@ export default function SubmitTestimonialPage() {
             <input type="file" name="after" accept="image/*" />
           </div>
         </div>
+        <HCaptcha sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY} />
         <button disabled={state==='up'} className="bg-blue-600 text-white px-4 py-2 rounded">ارسال</button>
         {state==='done' && <div className="text-green-600">ثبت شد، پس از تایید نمایش داده می‌شود.</div>}
         {state==='err' && <div className="text-red-600">خطا در ارسال</div>}

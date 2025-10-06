@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import HCaptcha from '../../components/HCaptcha';
 
 export default function ConsultationPage() {
   const [state, setState] = useState<'idle'|'submitting'|'success'|'error'>('idle');
@@ -29,6 +30,7 @@ export default function ConsultationPage() {
         <input name="phone" required className="w-full border rounded p-2" placeholder="تلفن" />
         <input name="email" className="w-full border rounded p-2" placeholder="ایمیل" />
         <textarea name="description" required className="w-full border rounded p-2" placeholder="توضیحات" />
+        <HCaptcha sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY} />
         <button disabled={state==='submitting'} className="bg-blue-600 text-white px-4 py-2 rounded">ارسال</button>
         {state==='success' && <div className="text-green-600">ارسال شد</div>}
         {state==='error' && <div className="text-red-600">خطا در ارسال</div>}
