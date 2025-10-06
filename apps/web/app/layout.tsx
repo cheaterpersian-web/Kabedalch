@@ -23,6 +23,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <a href="/blog">بلاگ</a>
             <a href="/cart">سبد خرید</a>
             <span className="ml-auto" />
+            <a href="/admin/dashboard">ادمین</a>
             <a href="/login">ورود</a>
             <a href="/register">ثبت‌نام</a>
           </nav>

@@ -1,4 +1,4 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Delete, Get, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -12,5 +12,12 @@ export class UsersController {
     const userId = req.user?.sub as string | undefined;
     if (!userId) return null;
     return this.service.me(userId);
+  }
+
+  @Delete('me')
+  deleteMe(@Req() req: any) {
+    const userId = req.user?.sub as string | undefined;
+    if (!userId) return { ok: false };
+    return this.service.deleteSelf(userId);
   }
 }

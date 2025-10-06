@@ -65,4 +65,14 @@ export class AdminController {
   listUsers() {
     return this.prisma.user.findMany({ orderBy: { createdAt: 'desc' }, select: { id: true, name: true, family: true, email: true, phone: true, role: true, createdAt: true } });
   }
+
+  @Patch('users/:id/role')
+  updateUserRole(@Param('id') id: string, @Body() body: { role: 'user'|'admin'|'consultant' }) {
+    return this.prisma.user.update({ where: { id }, data: { role: body.role } });
+  }
+
+  @Post('testimonials')
+  createTestimonial(@Body() body: { userName: string; phoneMasked?: string; phoneFullEncrypted?: string; message: string; approved?: boolean }) {
+    return this.prisma.testimonial.create({ data: { ...body, approved: body.approved ?? true } });
+  }
 }
