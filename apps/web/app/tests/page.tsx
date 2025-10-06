@@ -9,6 +9,7 @@ export default async function TestsPage() {
   return (
     <div className="space-y-4 container py-6">
       <h1 className="text-2xl font-bold">تست‌های آنلاین</h1>
+      <p className="text-gray-600">با ادامه، با ذخیره‌سازی داده‌های تست موافقت می‌کنید.</p>
       <ul className="list-disc pr-6">
         {templates.map((t: any) => (
           <li key={t.id}>

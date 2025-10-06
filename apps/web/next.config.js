@@ -1,11 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  i18n: {
-    locales: ['fa'],
-    defaultLocale: 'fa',
-    localeDetection: false,
-  },
+  i18n: require('./next-i18next.config').i18n,
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
