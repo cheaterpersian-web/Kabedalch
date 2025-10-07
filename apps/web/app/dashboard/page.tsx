@@ -1,21 +1,7 @@
-export const dynamic = 'force-dynamic';
+"use client";
+import { useEffect, useState } from 'react';
 
-async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`/api/proxy${path}`, { cache: 'no-store', headers: headersWithAuth() } as any);
-  if (!res.ok) throw new Error('failed');
-  return res.json();
-}
-
-function headersWithAuth() {
-  if (typeof window === 'undefined') return {} as any;
-  const token = localStorage.getItem('accessToken');
-  const h = new Headers();
-  if (token) h.set('Authorization', `Bearer ${token}`);
-  return h as any;
-}
-
-export default async function DashboardPage() {
-  // This page is client-hydrated due to localStorage; do a simple client redirect if not authed.
+export default function DashboardPage() {
   return (
     <div className="container py-8 space-y-6">
       <h1 className="text-2xl font-bold">داشبورد من</h1>
@@ -35,16 +21,13 @@ export default async function DashboardPage() {
   );
 }
 
-"use client";
-import { useEffect, useState } from 'react';
-
 function useAuthFetch<T>(path: string, fallback: T) {
   const [data, setData] = useState<T>(fallback);
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (!token) return;
     fetch(`/api/proxy${path}`, { headers: { Authorization: `Bearer ${token}` } })
-      .then((r) => (r.ok ? r.json() : fallback as any))
+      .then((r) => (r.ok ? r.json() : (fallback as any)))
       .then(setData)
       .catch(() => setData(fallback));
   }, [path]);
