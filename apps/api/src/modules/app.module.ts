@@ -38,7 +38,7 @@ import { SecurityController } from './common/security.controller';
     UploadsModule,
     UsersModule,
   ],
-  controllers: [HealthController, SecurityController, CmsController],
+  controllers: [HealthController, SecurityController],
   providers: [
     {
       provide: APP_GUARD,
