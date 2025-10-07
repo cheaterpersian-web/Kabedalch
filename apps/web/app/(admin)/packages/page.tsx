@@ -4,6 +4,7 @@ async function getPackages() {
   return res.json();
 }
 
+export const dynamic = 'force-static';
 export default async function AdminPackagesPage() {
   const list = await getPackages();
   return (
