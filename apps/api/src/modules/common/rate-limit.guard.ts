@@ -20,6 +20,7 @@ export class RateLimitGuard implements CanActivate {
   }
 
   async canActivate(context: ExecutionContext) {
+    if (process.env.RATE_LIMIT_DISABLE === 'true') return true;
     const req = context.switchToHttp().getRequest();
     const cfg = this.reflector.getAllAndOverride<{ points: number; duration: number }>(RATE_LIMIT_KEY, [
       context.getHandler(),
@@ -32,7 +33,7 @@ export class RateLimitGuard implements CanActivate {
       await this.limiter.consume(key, 1, { customDuration: duration, customPoints: points });
       return true;
     } catch {
-      return false;
+      return process.env.RATE_LIMIT_FAIL_OPEN === 'true';
     }
   }
 }
