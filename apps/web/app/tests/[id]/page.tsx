@@ -9,13 +9,13 @@ export default function TestRunner() {
   const [result, setResult] = useState<any | null>(null);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/tests/templates`)
+    fetch(`/api/proxy/api/tests/templates`)
       .then((r) => r.json())
       .then((t) => setTemplate(t.find((x: any) => x.id === id)));
   }, [id]);
 
   const submit = async () => {
-    const r = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/tests/${id}/submit`, {
+    const r = await fetch(`/api/proxy/api/tests/${id}/submit`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answers })
     });
     const data = await r.json();
