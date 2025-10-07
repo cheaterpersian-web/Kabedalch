@@ -1,24 +1,25 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { IsEmail, IsString, MinLength } from 'class-validator';
 import { AuthService } from './auth.service';
 import { ApiTags } from '@nestjs/swagger';
 import { RateLimit, RateLimitGuard } from '../common/rate-limit.guard';
 import { Public } from '../common/jwt-auth.guard';
 
 class RegisterDto {
-  name!: string;
-  family!: string;
-  phone!: string;
-  email!: string;
-  password!: string;
+  @IsString() name!: string;
+  @IsString() family!: string;
+  @IsString() phone!: string;
+  @IsEmail() email!: string;
+  @IsString() @MinLength(6) password!: string;
 }
 
 class LoginDto {
-  email!: string;
-  password!: string;
+  @IsEmail() email!: string;
+  @IsString() password!: string;
 }
 
 class RefreshDto {
-  refreshToken!: string;
+  @IsString() refreshToken!: string;
 }
 
 @ApiTags('auth')
