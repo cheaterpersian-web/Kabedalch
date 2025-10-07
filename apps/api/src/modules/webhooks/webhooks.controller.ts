@@ -2,11 +2,12 @@ import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
 import { ApiTags } from '@nestjs/swagger';
 import { AghaPardakhtService } from '../orders/agha-pardakht.service';
+import { SettingsService } from '../settings/settings.service';
 
 @ApiTags('webhooks')
 @Controller('webhooks')
 export class WebhooksController {
-  constructor(private prisma: PrismaService, private agha: AghaPardakhtService) {}
+  constructor(private prisma: PrismaService, private agha: AghaPardakhtService, private settings: SettingsService) {}
 
   @Post('payment')
   async payment(@Body() body: any) {

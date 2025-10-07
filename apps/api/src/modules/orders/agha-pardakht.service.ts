@@ -1,23 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class AghaPardakhtService {
-  private get apiKey() {
-    return process.env.AGHAPARDAKHT_API_KEY || '';
-  }
-  private get callbackBase() {
-    return process.env.PAYMENT_CALLBACK_BASE || process.env.CALLBACK_BASE || '';
+  constructor(private settings: SettingsService) {}
+
+  private async getSetting(key: string): Promise<string> {
+    const val = await this.settings.get(key);
+    if (typeof val === 'string') return val;
+    if (val == null) return '';
+    try {
+      return JSON.stringify(val);
+    } catch {
+      return String(val);
+    }
   }
 
-  createPayment(amountIRR: number, orderId: string) {
-    // Placeholder: return gateway URL (replace with real API call)
-    const callback = this.callbackBase || 'http://localhost:3001/api/webhooks/payment';
+  private async getApiKey(): Promise<string> {
+    const fromDb = await this.getSetting('payments.agha.apiKey');
+    return fromDb || process.env.AGHAPARDAKHT_API_KEY || '';
+  }
+
+  private async getCallbackBase(): Promise<string> {
+    const fromDb = await this.getSetting('payments.callbackBase');
+    return fromDb || process.env.PAYMENT_CALLBACK_BASE || process.env.CALLBACK_BASE || '';
+  }
+
+  async createPayment(amountIRR: number, orderId: string) {
+    // TODO: call real AghaPardakht API using await this.getApiKey()
+    const callback = (await this.getCallbackBase()) || 'http://localhost:3001/api/webhooks/payment';
     const url = `${callback}?agha=1&orderId=${orderId}`;
     return { payment_url: url };
   }
 
   async verifyPayment(payload: any) {
-    // Placeholder: trust payload in sandbox; production must verify signature
+    // TODO: verify signature with await this.getApiKey() when docs available
     const ok = !!payload?.orderId;
     return { ok, orderId: payload?.orderId };
   }
