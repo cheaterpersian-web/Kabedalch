@@ -16,7 +16,15 @@ export default function RegisterPage() {
       const res = await fetch(`/api/proxy/api/auth/register`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
       });
-      if (!res.ok) { setError('ثبت‌نام ناموفق بود'); return; }
+      if (!res.ok) {
+        try {
+          const data = await res.json();
+          setError(data?.message || 'ثبت‌نام ناموفق بود');
+        } catch {
+          setError('ثبت‌نام ناموفق بود');
+        }
+        return;
+      }
       setOk(true);
       window.location.href = '/register/success';
     } catch {
