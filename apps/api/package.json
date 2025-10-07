@@ -42,7 +42,11 @@
     "nestjs-pino": "3.5.0",
     "pino": "9.4.0",
     "swagger-ui-express": "5.0.1",
-    "@nestjs/swagger": "7.4.2"
+    "@nestjs/swagger": "7.4.2",
+    "otplib": "12.0.1",
+    "cookie-parser": "1.4.6",
+    "@sentry/node": "8.35.0",
+    "node-fetch": "3.3.2"
   },
   "devDependencies": {
     "@nestjs/cli": "10.4.5",

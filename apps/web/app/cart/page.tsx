@@ -17,6 +17,9 @@ export default function CartPage() {
     });
     const d = await r.json();
     setPayUrl(d.payment_url);
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'begin_checkout', { package_id: pkgId });
+    }
   }
 
   return (

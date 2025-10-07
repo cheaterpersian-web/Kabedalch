@@ -18,7 +18,11 @@ export default function TestRunner() {
     const r = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/tests/${id}/submit`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answers })
     });
-    setResult(await r.json());
+    const data = await r.json();
+    setResult(data);
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'test_submit', { test_id: id, score: data.score, grade: data.grade });
+    }
   };
 
   if (!template) return <div className="container py-8">در حال بارگذاری...</div>;

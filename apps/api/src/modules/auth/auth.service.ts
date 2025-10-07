@@ -37,7 +37,8 @@ export class AuthService {
     const refreshToken = await this.jwt.signAsync({ sub: user.id, type: 'refresh' }, { expiresIn: '7d' });
     const refreshTokenHash = await bcrypt.hash(refreshToken, 10);
     await this.prisma.user.update({ where: { id: user.id }, data: { refreshTokenHash } });
-    return { accessToken, refreshToken };
+    const requires2fa = !!user.totpSecret;
+    return { accessToken, refreshToken, requires2fa };
   }
 
   async refresh(userId: string, refreshToken: string) {

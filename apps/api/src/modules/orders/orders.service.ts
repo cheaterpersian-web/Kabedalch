@@ -16,8 +16,10 @@ export class OrdersService {
         metadata: {},
       },
     });
-    // TODO: integrate gateway (Zarinpal, etc.) and return payment_url
-    return { id: order.id, payment_url: `https://example-gateway/pay/${order.id}` };
+    // Zarinpal sandbox simulation: return callback URL with orderId
+    const callbackBase = process.env.PAYMENT_CALLBACK_BASE || 'http://localhost:3001/api/webhooks/payment';
+    const payment_url = `${callbackBase}?sandbox=1&orderId=${order.id}`;
+    return { id: order.id, payment_url };
   }
 
   getById(id: string) {
