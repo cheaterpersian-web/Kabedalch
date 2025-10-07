@@ -1,3 +1,6 @@
+import dynamic from 'next/dynamic';
+const TestimonialsSlider = dynamic(() => import('../components/TestimonialsSlider'), { ssr: false });
+
 export default function HomePage() {
   return (
     <main className="container px-3 py-8 space-y-8">
@@ -28,8 +31,7 @@ export default function HomePage() {
 
       <section className="space-y-3">
         <h2 className="text-center font-bold">رضایت مراجعین</h2>
-        {/* @ts-expect-error Async boundary not needed for client component */}
-        {require('../components/TestimonialsSlider').default()}
+        <TestimonialsSlider />
       </section>
     </main>
   );
