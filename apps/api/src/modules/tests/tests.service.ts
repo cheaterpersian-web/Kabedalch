@@ -10,6 +10,52 @@ export class TestsService {
   constructor(private prisma: PrismaService) {}
 
   async listTemplates() {
+    const existing = await this.prisma.testTemplate.findMany({ orderBy: { createdAt: 'desc' } });
+    if (existing.length > 0) return existing;
+    // Seed minimal templates if database is empty (first-run safety)
+    await this.prisma.testTemplate.upsert({
+      where: { id: 'liver-template' },
+      create: {
+        id: 'liver-template',
+        type: 'liver' as any,
+        name: 'تست کبد چرب',
+        questions: [
+          { id: 'q1', text: 'احساس خستگی دارید؟', type: 'single', weight: 1, options: [
+            { value: 'هرگز', score: 0 }, { value: 'گاهی', score: 1 }, { value: 'اغلب', score: 2 }
+          ]},
+          { id: 'q2', text: 'شاخص BMI شما؟', type: 'number', weight: 1.5 },
+        ],
+        scoringLogic: { liver: [
+          { max: 4, grade: 'نرمال' },
+          { max: 9, grade: 'خفیف (grade 1)' },
+          { max: 14, grade: 'متوسط (grade 2)' },
+          { max: 999, grade: 'شدید (grade 3)' }
+        ]},
+      },
+      update: {},
+    });
+    await this.prisma.testTemplate.upsert({
+      where: { id: 'alcohol-template' },
+      create: {
+        id: 'alcohol-template',
+        type: 'alcohol' as any,
+        name: 'تست سنجش اعتیاد به الکل',
+        questions: [
+          { id: 'a1', text: 'چند وقت یکبار الکل مصرف می‌کنید؟', type: 'single', weight: 1, options: [
+            { value: 'هرگز', score: 0 }, { value: 'ماهانه', score: 1 }, { value: 'هفتگی', score: 2 }, { value: 'روزانه', score: 4 }
+          ]},
+          { id: 'a2', text: 'در یک نوبت چند واحد مصرف می‌کنید؟', type: 'single', weight: 1, options: [
+            { value: '۱-۲', score: 0 }, { value: '۳-۴', score: 1 }, { value: '۵-۶', score: 2 }, { value: '۷+', score: 4 }
+          ]},
+        ],
+        scoringLogic: { alcohol: [
+          { max: 7, grade: 'کم‌خطر' },
+          { max: 15, grade: 'خطر متوسط' },
+          { max: 999, grade: 'نیاز به ارزیابی تخصصی' }
+        ]},
+      },
+      update: {},
+    });
     return this.prisma.testTemplate.findMany({ orderBy: { createdAt: 'desc' } });
   }
 
