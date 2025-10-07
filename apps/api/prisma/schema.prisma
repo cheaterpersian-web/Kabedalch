@@ -57,6 +57,7 @@ model Package {
   updatedAt     DateTime  @updatedAt
 
   orders        Order[]
+  recommendedResults TestResult[] @relation("RecommendedPackage")
 }
 
 model TestTemplate {
@@ -66,6 +67,7 @@ model TestTemplate {
   questions    Json
   scoringLogic Json
   createdAt    DateTime @default(now())
+  results      TestResult[]
 }
 
 model TestResult {
@@ -77,7 +79,7 @@ model TestResult {
   answers                Json
   score                  Int
   grade                  String
-  recommendedPackage     Package? @relation(fields: [recommendedPackageId], references: [id])
+  recommendedPackage     Package? @relation("RecommendedPackage", fields: [recommendedPackageId], references: [id])
   recommendedPackageId   String?
   createdAt              DateTime @default(now())
 }
