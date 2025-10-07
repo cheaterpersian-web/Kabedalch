@@ -25,19 +25,19 @@ export default function TestRunner() {
     }
   };
 
-  if (!template) return <div className="container py-8">در حال بارگذاری...</div>;
+  if (!template) return <div className="container px-3 py-8">در حال بارگذاری...</div>;
 
   return (
-    <div className="container py-8 space-y-6">
-      <h1 className="text-2xl font-bold">{template.name}</h1>
+    <div className="container px-3 py-8 space-y-6">
+      <h1 className="text-xl md:text-2xl font-bold">{template.name}</h1>
       <div className="space-y-4">
         {template.questions.map((q: any) => (
           <div key={q.id} className="border p-3 rounded">
             <div className="font-semibold mb-2">{q.text}</div>
             {q.type === 'number' ? (
-              <input className="border rounded p-2 w-full" type="number" onChange={(e) => setAnswers({ ...answers, [q.id]: Number(e.target.value) })} />
+              <input className="border rounded p-3 w-full" type="number" onChange={(e) => setAnswers({ ...answers, [q.id]: Number(e.target.value) })} />
             ) : q.type === 'single' ? (
-              <select className="border rounded p-2 w-full" onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}>
+              <select className="border rounded p-3 w-full" onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}>
                 <option value="">-- انتخاب --</option>
                 {(q.options || []).map((o: any) => (
                   <option key={o.value} value={o.value}>{o.value}</option>
@@ -60,7 +60,7 @@ export default function TestRunner() {
           </div>
         ))}
       </div>
-      <button onClick={submit} className="bg-blue-600 text-white px-4 py-2 rounded">ثبت نتیجه</button>
+      <button onClick={submit} className="bg-blue-600 text-white px-4 py-3 rounded w-full md:w-auto">ثبت نتیجه</button>
       {result && (
         <div className="border rounded p-4 space-y-2">
           <div>نمره: {result.score}</div>
