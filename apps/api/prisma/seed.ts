@@ -42,11 +42,11 @@ async function main() {
       type: TestType.liver,
       name: 'تست کبد چرب',
       questions: [
-        { id: 'q1', text: 'احساس خستگی دارید؟', type: 'single', weight: 1, options: [
+        { id: 'q1', text: 'در یک ماه گذشته، چند بار احساس خستگی مفرط داشته‌اید؟', type: 'single', weight: 1, options: [
           { value: 'هرگز', score: 0 }, { value: 'گاهی', score: 1 }, { value: 'اغلب', score: 2 }
         ]},
         { id: 'q2', text: 'شاخص BMI شما؟', type: 'number', weight: 1.5 },
-        { id: 'q3', text: 'درد یا سنگینی در سمت راست شکم دارید؟', type: 'single', weight: 1, options: [
+        { id: 'q3', text: 'درد یا سنگینی در سمت راست شکم (ناحیه کبد) دارید؟', type: 'single', weight: 1, options: [
           { value: 'خیر', score: 0 }, { value: 'خفیف', score: 1 }, { value: 'شدید', score: 2 }
         ]},
         { id: 'q4', text: 'مصرف قند و شیرینی روزانه', type: 'single', weight: 1, options: [
@@ -91,7 +91,7 @@ async function main() {
         { id: 'a1', text: 'چند وقت یکبار الکل مصرف می‌کنید؟', type: 'single', weight: 1, options: [
           { value: 'هرگز', score: 0 }, { value: 'ماهانه', score: 1 }, { value: 'هفتگی', score: 2 }, { value: 'روزانه', score: 4 }
         ]},
-        { id: 'a2', text: 'در یک نوبت چند واحد مصرف می‌کنید؟', type: 'single', weight: 1, options: [
+        { id: 'a2', text: 'در یک نوبت معمولاً چند واحد مصرف می‌کنید؟', type: 'single', weight: 1, options: [
           { value: '۱-۲', score: 0 }, { value: '۳-۴', score: 1 }, { value: '۵-۶', score: 2 }, { value: '۷+', score: 4 }
         ]},
         { id: 'a3', text: 'آیا برای شروع روز نیاز به مصرف دارید؟', type: 'single', weight: 1, options: [
