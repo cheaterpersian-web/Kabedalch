@@ -79,7 +79,10 @@ export class AdminController {
   }
 
   @Post('testimonials')
-  createTestimonial(@Body() body: { userName: string; phoneMasked?: string; phoneFullEncrypted?: string; message: string; approved?: boolean }) {
+  createTestimonial(
+    @Body()
+    body: { userName: string; phoneMasked: string; phoneFullEncrypted?: string; message: string; approved?: boolean },
+  ) {
     return this.prisma.testimonial.create({ data: { ...body, approved: body.approved ?? true } });
   }
 }
