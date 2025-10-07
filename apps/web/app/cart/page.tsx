@@ -12,7 +12,7 @@ export default function CartPage() {
 
   async function checkout() {
     if (!pkgId) return;
-    const r = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001'}/api/orders`, {
+    const r = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/orders`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ packageId: pkgId })
     });
     const d = await r.json();

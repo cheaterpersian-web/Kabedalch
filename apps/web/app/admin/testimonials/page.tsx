@@ -17,7 +17,7 @@ export default async function AdminTestimonialsPage() {
               <div className="font-semibold">{t.userName} — {t.phoneMasked}</div>
               <div>{t.message}</div>
             </div>
-            <form action={`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001'}/api/admin/testimonials/${t.id}/approve`} method="POST">
+            <form action={`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/admin/testimonials/${t.id}/approve`} method="POST">
               <button className="bg-green-600 text-white px-3 py-1 rounded">تایید</button>
             </form>
           </div>
