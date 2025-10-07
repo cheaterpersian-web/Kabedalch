@@ -15,6 +15,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
-COPY package.json next.config.js ./
+COPY package.json next.config.js next-i18next.config.js ./
 EXPOSE 3000
 CMD ["node", "node_modules/next/dist/bin/next", "start", "-p", "3000"]
