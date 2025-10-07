@@ -18,6 +18,7 @@ export default function RegisterPage() {
       });
       if (!res.ok) { setError('ثبت‌نام ناموفق بود'); return; }
       setOk(true);
+      window.location.href = '/register/success';
     } catch {
       setError('اتصال به سرور برقرار نشد');
     } finally {
