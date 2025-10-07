@@ -59,7 +59,10 @@ EOF
   ok "Created apps/web/.env.local"
 fi
 
-say "Starting services with Docker Compose..."
+say "Starting services with Docker Compose (you can override WEB_PORT/API_PORT)..."
+WEB_PORT=${WEB_PORT:-3000}
+API_PORT=${API_PORT:-3001}
+export WEB_PORT API_PORT
 compose up -d --build
 ok "Services are starting"
 
@@ -87,8 +90,8 @@ compose exec -T api node -e "(async()=>{const bcrypt=require('bcrypt');const {Pr
 ok "Admin ready"
 
 say "URLs"
-echo "- Web:      ${GREEN}http://localhost:3000${NC}"
-echo "- API Docs: ${GREEN}http://localhost:3001/api/docs${NC}"
+echo "- Web:      ${GREEN}http://localhost:${WEB_PORT}${NC}"
+echo "- API Docs: ${GREEN}http://localhost:${API_PORT}/api/docs${NC}"
 echo "- MinIO:    ${GREEN}http://localhost:9001${NC} (user/pass: minioadmin/minioadmin)"
 
 ok "Setup complete. Login with admin@example.com / Admin@123"
