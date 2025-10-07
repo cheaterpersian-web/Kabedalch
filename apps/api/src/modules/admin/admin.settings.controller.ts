@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
 import { Roles, RolesGuard } from '../common/roles.guard';
 
@@ -16,8 +16,17 @@ export class AdminSettingsController {
 
   @Patch(':key')
   async set(@Param('key') key: string, @Body() body: any) {
-    const value = body?.value ?? null;
+    const raw = body?.value ?? null;
+    let value: any = raw;
+    if (typeof raw === 'string') {
+      try { value = JSON.parse(raw); } catch { if (raw === 'true') value = true; else if (raw === 'false') value = false; }
+    }
     await this.prisma.setting.upsert({ where: { key }, update: { value }, create: { key, value } });
     return { ok: true };
+  }
+
+  @Post(':key')
+  async setPost(@Param('key') key: string, @Body() body: any) {
+    return this.set(key, body);
   }
 }

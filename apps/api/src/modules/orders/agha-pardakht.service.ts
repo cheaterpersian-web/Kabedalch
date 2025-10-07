@@ -3,14 +3,15 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AghaPardakhtService {
   private get apiKey() {
-    const key = process.env.AGHAPARDAKHT_API_KEY;
-    if (!key) throw new Error('AGHAPARDAKHT_API_KEY missing');
-    return key;
+    return process.env.AGHAPARDAKHT_API_KEY || '';
+  }
+  private get callbackBase() {
+    return process.env.PAYMENT_CALLBACK_BASE || process.env.CALLBACK_BASE || '';
   }
 
   createPayment(amountIRR: number, orderId: string) {
     // Placeholder: return gateway URL (replace with real API call)
-    const callback = process.env.PAYMENT_CALLBACK_BASE || 'http://localhost:3001/api/webhooks/payment';
+    const callback = this.callbackBase || 'http://localhost:3001/api/webhooks/payment';
     const url = `${callback}?agha=1&orderId=${orderId}`;
     return { payment_url: url };
   }
