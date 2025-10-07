@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 
-const API_BASE = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || process.env.API_INTERNAL_URL || 'http://localhost:3001';
 
 async function handler(req: Request, { params }: { params: { path: string[] } }) {
   const targetUrl = `${API_BASE}/${params.path.join('/')}`;
