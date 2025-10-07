@@ -25,6 +25,12 @@ export default function HomePage() {
           <p className="text-sm text-gray-600">گفت‌وگو با مشاوران مجرب</p>
         </div>
       </section>
+
+      <section className="space-y-3">
+        <h2 className="text-center font-bold">رضایت مراجعین</h2>
+        {/* @ts-expect-error Async boundary not needed for client component */}
+        {require('../components/TestimonialsSlider').default()}
+      </section>
     </main>
   );
 }

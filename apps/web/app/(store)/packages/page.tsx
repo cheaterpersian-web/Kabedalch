@@ -21,11 +21,15 @@ export default async function PackagesPage({ searchParams }: { searchParams?: { 
       </form>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {filtered.map((p: any) => (
-          <div key={p.id} className="border rounded-lg p-4 space-y-2">
-            <h3 className="font-bold text-lg">{p.title}</h3>
-            <p className="text-sm text-gray-600">{p.description}</p>
-            <div className="text-primary font-semibold">{p.priceIRR.toLocaleString('fa-IR')} تومان</div>
-            <a href={`/packages/${p.id}`} className="inline-block bg-blue-600 text-white px-4 py-2 rounded">مشاهده</a>
+          <div key={p.id} className="rounded-xl border shadow-sm overflow-hidden bg-white">
+            <div className="p-4 space-y-2">
+              <h3 className="font-bold text-lg">{p.title}</h3>
+              <p className="text-sm text-gray-600 line-clamp-3">{p.description}</p>
+              <div className="text-primary font-semibold">{p.priceIRR.toLocaleString('fa-IR')} تومان</div>
+            </div>
+            <div className="p-4 pt-0">
+              <a href={`/packages/${p.id}`} className="inline-block w-full text-center bg-blue-600 text-white px-4 py-3 rounded-lg">مشاهده</a>
+            </div>
           </div>
         ))}
       </div>
