@@ -13,10 +13,9 @@ export class ConsultationsController {
   @Post()
   @Public()
   @RateLimit(5, 60)
-  request(
-    @Body()
-    body: { name: string; phone: string; email?: string; description: string; preferredTime?: string; hcaptchaToken?: string },
-  ) {
-    return verifyHCaptcha(body.hcaptchaToken).then((ok) => (ok ? this.service.request(body) : { ok: false, error: 'captcha' }));
+  async request(@Body() body: { name: string; phone: string; email?: string; description: string; preferredTime?: string; hcaptchaToken?: string }) {
+    const ok = await verifyHCaptcha(body.hcaptchaToken);
+    if (!ok) return { ok: false, error: 'captcha' } as any;
+    return this.service.request(body);
   }
 }

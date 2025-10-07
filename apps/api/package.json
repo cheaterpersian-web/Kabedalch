@@ -6,7 +6,7 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "dev": "nest start --watch",
-    "build": "nest build",
+    "build": "nest build -p tsconfig.build.json",
     "start": "node dist/main.js",
     "lint": "eslint .",
     "test": "jest",
