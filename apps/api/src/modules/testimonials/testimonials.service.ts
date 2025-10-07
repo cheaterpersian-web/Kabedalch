@@ -12,7 +12,7 @@ export class TestimonialsService {
     const showFullPhone = !!(await this.settings.get('testimonials.showFullPhone'));
     const list = await this.prisma.testimonial.findMany({ where: { approved: true }, orderBy: { createdAt: 'desc' } });
     if (!showFullPhone) return list;
-    return list.map((t) => ({
+    return list.map((t: any) => ({
       ...t,
       phoneFull: t.phoneFullEncrypted ? this.crypto.decrypt(t.phoneFullEncrypted) : null,
     }));

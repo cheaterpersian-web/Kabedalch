@@ -56,7 +56,7 @@ export class TestsService {
     let recommendedPackageId: string | undefined;
     const packages = await this.prisma.package.findMany();
     const tag = `${template.type}:${grade}`;
-    const best = packages.find((p) => p.tags.includes(tag)) || packages[0];
+    const best = packages.find((p: any) => p.tags.includes(tag)) || packages[0];
     if (best) recommendedPackageId = best.id;
 
     const result = await this.prisma.testResult.create({

@@ -44,6 +44,5 @@ import { SecurityController } from './common/security.controller';
       useClass: JwtAuthGuard,
     },
   ],
-  controllers: [HealthController],
 })
 export class AppModule {}
