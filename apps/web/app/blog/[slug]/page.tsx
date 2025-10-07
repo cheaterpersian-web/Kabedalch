@@ -2,9 +2,14 @@ export const dynamic = 'force-dynamic';
 async function fetchPost(slug: string) {
   const env: any = process.env;
   const base = env.API_INTERNAL_URL || env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
-  const res = await fetch(`${base}/api/posts`, { cache: 'no-store' });
-  const posts = await res.json();
-  return posts.find((p: any) => p.slug === slug);
+  try {
+    const res = await fetch(`${base}/api/posts`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    const posts = await res.json();
+    return posts.find((p: any) => p.slug === slug) || null;
+  } catch {
+    return null;
+  }
 }
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {

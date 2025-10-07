@@ -2,8 +2,13 @@ export const dynamic = 'force-dynamic';
 async function fetchPosts() {
   const env: any = process.env;
   const base = env.API_INTERNAL_URL || env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
-  const res = await fetch(`${base}/api/posts`, { next: { revalidate: 60 } });
-  return res.json();
+  try {
+    const res = await fetch(`${base}/api/posts`, { next: { revalidate: 60 } });
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
 }
 
 export default async function BlogPage() {

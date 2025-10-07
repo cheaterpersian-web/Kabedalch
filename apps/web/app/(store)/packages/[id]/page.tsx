@@ -2,12 +2,18 @@ import Image from 'next/image';
 export const dynamic = 'force-dynamic';
 async function fetchPackage(id: string) {
   const base = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
-  const res = await fetch(`${base}/api/packages/${id}`, { cache: 'no-store' });
-  return res.json();
+  try {
+    const res = await fetch(`${base}/api/packages/${id}`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
 }
 
 export default async function PackageDetail({ params }: { params: { id: string } }) {
   const p = await fetchPackage(params.id);
+  if (!p) return <div className="container py-8">یافت نشد</div>;
   return (
     <div className="space-y-4 px-3">
       <Image src={`https://picsum.photos/seed/${p.id}/800/400`} alt="" width={800} height={400} className="w-full h-auto rounded-xl" priority={false} />

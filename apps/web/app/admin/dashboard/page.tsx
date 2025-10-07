@@ -1,7 +1,12 @@
 async function fetchDashboard() {
   const base = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
-  const res = await fetch(`${base}/api/admin/dashboard`, { cache: 'no-store' });
-  return res.json();
+  try {
+    const res = await fetch(`${base}/api/admin/dashboard`, { cache: 'no-store' });
+    if (!res.ok) return { users: 0, orders: 0, tests: 0, messages: 0 };
+    return res.json();
+  } catch {
+    return { users: 0, orders: 0, tests: 0, messages: 0 };
+  }
 }
 
 export const dynamic = 'force-dynamic';

@@ -1,7 +1,12 @@
 async function getPackages() {
   const base = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
-  const res = await fetch(`${base}/api/admin/packages`, { cache: 'no-store' });
-  return res.json();
+  try {
+    const res = await fetch(`${base}/api/admin/packages`, { cache: 'no-store' });
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
 }
 
 export const dynamic = 'force-dynamic';
