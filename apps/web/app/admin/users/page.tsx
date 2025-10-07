@@ -1,5 +1,5 @@
 async function getUsers() {
-  const base = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
+  const base = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
   const res = await fetch(`${base}/api/admin/users`, { cache: 'no-store' });
   return res.json();
 }

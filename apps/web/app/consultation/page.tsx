@@ -11,7 +11,7 @@ export default function ConsultationPage() {
     const fd = new FormData(e.currentTarget);
     const payload = Object.fromEntries(fd.entries());
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/consultations`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001'}/api/consultations`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       });
       if (!res.ok) throw new Error('fail');

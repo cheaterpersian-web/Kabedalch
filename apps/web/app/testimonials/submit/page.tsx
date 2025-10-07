@@ -15,7 +15,7 @@ export default function SubmitTestimonialPage() {
       if (file && file.size) {
         const up = new FormData();
         up.append('file', file);
-        const r = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/uploads`, { method: 'POST', body: up });
+        const r = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001'}/api/uploads`, { method: 'POST', body: up });
         const data = await r.json();
         if (key==='before') beforeUrl = data.url; else afterUrl = data.url;
       }
@@ -27,7 +27,7 @@ export default function SubmitTestimonialPage() {
       imageBeforeUrl: beforeUrl,
       imageAfterUrl: afterUrl,
     };
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/testimonials`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001'}/api/testimonials`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
     });
     setState(res.ok ? 'done' : 'err');
