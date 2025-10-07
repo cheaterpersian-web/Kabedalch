@@ -66,7 +66,7 @@ say "Starting services with Docker Compose (you can override WEB_PORT/API_PORT/N
 WEB_PORT=${WEB_PORT:-3200}
 API_PORT=${API_PORT:-3201}
 export WEB_PORT API_PORT
-export NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL:-http://localhost:${API_PORT}}
+export NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL:-http://api:3001}
 compose up -d --build
 ok "Services are starting"
 
