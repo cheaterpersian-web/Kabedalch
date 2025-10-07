@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || process.env.API_INTERNAL_URL || 'http://localhost:3001';
+// Server-to-server should prefer internal URL; public base is for browser.
+const API_BASE = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
 
 async function handler(req: Request, { params }: { params: { path: string[] } }) {
   const url = new URL(req.url);
@@ -21,6 +22,8 @@ async function handler(req: Request, { params }: { params: { path: string[] } })
         body = await req.text();
       } else if (contentType.startsWith('multipart/form-data')) {
         body = await (req as any).formData();
+        // Let fetch set correct boundary header
+        headers.delete('content-type');
       } else if (contentType.includes('application/x-www-form-urlencoded')) {
         body = await req.text();
       } else {
@@ -41,9 +44,13 @@ async function handler(req: Request, { params }: { params: { path: string[] } })
 
   if (body !== undefined) (init as any).duplex = 'half';
 
-  const res = await fetch(targetUrl, init as any);
-  const outHeaders = new Headers(res.headers);
-  return new Response(res.body, { status: res.status, statusText: res.statusText, headers: outHeaders });
+  try {
+    const res = await fetch(targetUrl, init as any);
+    const outHeaders = new Headers(res.headers);
+    return new Response(res.body, { status: res.status, statusText: res.statusText, headers: outHeaders });
+  } catch (e: any) {
+    return Response.json({ error: 'proxy_fetch_failed', message: e?.message || 'Upstream fetch failed' }, { status: 502 });
+  }
 }
 
 export { handler as GET, handler as POST, handler as PUT, handler as PATCH, handler as DELETE, handler as OPTIONS };
