@@ -1,5 +1,5 @@
 async function fetchCms(path: string) {
-  const base = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
+  const base = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
   const res = await fetch(`${base}${path}`, { cache: 'no-store' });
   return res.json();
 }

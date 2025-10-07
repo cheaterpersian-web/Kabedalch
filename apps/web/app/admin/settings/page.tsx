@@ -1,5 +1,5 @@
 async function getSetting(key: string) {
-  const base = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
+  const base = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
   const res = await fetch(`${base}/api/admin/settings/${key}`, { cache: 'no-store' });
   return res.json();
 }

@@ -1,5 +1,5 @@
 async function fetchPackages() {
-  const base = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
+  const base = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
   const res = await fetch(`${base}/api/packages`, { next: { revalidate: 60 } });
   return res.json();
 }
