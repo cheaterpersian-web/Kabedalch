@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
+import { AghaPardakhtService } from './agha-pardakht.service';
 
 @Injectable()
 export class OrdersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private agha: AghaPardakhtService) {}
 
   async create(userId: string, packageId: string) {
     const pkg = await this.prisma.package.findUnique({ where: { id: packageId } });
@@ -16,9 +17,7 @@ export class OrdersService {
         metadata: {},
       },
     });
-    // Zarinpal sandbox simulation: return callback URL with orderId
-    const callbackBase = process.env.PAYMENT_CALLBACK_BASE || 'http://localhost:3001/api/webhooks/payment';
-    const payment_url = `${callbackBase}?sandbox=1&orderId=${order.id}`;
+    const { payment_url } = this.agha.createPayment(order.amountIRR, order.id);
     return { id: order.id, payment_url };
   }
 

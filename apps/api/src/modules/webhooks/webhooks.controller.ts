@@ -1,16 +1,21 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
 import { ApiTags } from '@nestjs/swagger';
+import { AghaPardakhtService } from '../orders/agha-pardakht.service';
 
 @ApiTags('webhooks')
 @Controller('webhooks')
 export class WebhooksController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private agha: AghaPardakhtService) {}
 
   @Post('payment')
   async payment(@Body() body: any) {
-    await this.prisma.webhook.create({ data: { provider: 'payment', payload: body, status: 'received' } });
-    return { ok: true };
+    const res = await this.agha.verifyPayment(body);
+    await this.prisma.webhook.create({ data: { provider: 'agha', payload: body, status: res.ok ? 'ok' : 'fail' } });
+    if (res.ok && res.orderId) {
+      await this.prisma.order.update({ where: { id: res.orderId }, data: { status: 'paid' } as any });
+    }
+    return { ok: res.ok };
   }
 
   @Get('payment')

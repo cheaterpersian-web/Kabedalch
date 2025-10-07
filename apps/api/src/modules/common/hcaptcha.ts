@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 export async function verifyHCaptcha(token?: string) {
   if (!process.env.HCAPTCHA_SECRET) return true; // disabled
   if (!token) return false;
