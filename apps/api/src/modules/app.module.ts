@@ -15,6 +15,7 @@ import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/jwt-auth.guard';
 import { HealthController } from './health.controller';
+import { SecurityController } from './common/security.controller';
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { HealthController } from './health.controller';
     UploadsModule,
     UsersModule,
   ],
-  controllers: [HealthController],
+  controllers: [HealthController, SecurityController],
   providers: [
     {
       provide: APP_GUARD,
