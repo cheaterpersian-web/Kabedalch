@@ -22,13 +22,14 @@ export default async function TestsPage() {
           <a href={`/tests/${firstId}`} className="inline-block bg-blue-600 text-white px-4 py-2 rounded">ادامه</a>
         </div>
       )}
-      <ul className="list-disc pr-6">
+      <div className="space-y-2">
         {templates.map((t: any) => (
-          <li key={t.id}>
-            <a href={`/tests/${t.id}`} className="text-blue-600 underline">{t.name}</a>
-          </li>
+          <div key={t.id} className="flex items-center justify-between border rounded p-3">
+            <div className="text-sm md:text-base">{t.name}</div>
+            <a href={`/tests/${t.id}`} className="bg-blue-600 text-white px-3 py-1.5 rounded text-sm">شروع</a>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
