@@ -17,8 +17,8 @@ export class OrdersService {
         metadata: {},
       },
     });
-    const { payment_url } = this.agha.createPayment(order.amountIRR, order.id);
-    return { id: order.id, payment_url };
+    const resp = await this.agha.createPayment(order.amountIRR, order.id);
+    return { id: order.id, payment_url: resp.payment_url };
   }
 
   getById(id: string) {
