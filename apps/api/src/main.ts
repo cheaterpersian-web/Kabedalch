@@ -21,7 +21,11 @@ async function bootstrap() {
       csurf({ cookie: { httpOnly: true, sameSite: 'lax', secure: false } })
     );
   }
-  app.enableCors({ origin: /localhost|127\.0\.0\.1/, credentials: true });
+  const corsOrigin = process.env.CORS_ORIGIN;
+  const origin = corsOrigin
+    ? corsOrigin.split(',').map((s) => s.trim()).filter(Boolean)
+    : [/localhost/, /127\.0\.0\.1/];
+  app.enableCors({ origin, credentials: true });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.setGlobalPrefix('api');
 
