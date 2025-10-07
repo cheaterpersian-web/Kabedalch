@@ -1,4 +1,5 @@
 import { Body, Controller, ForbiddenException, Get, Param, Post, Req } from '@nestjs/common';
+import { Public } from '../common/jwt-auth.guard';
 import { TestsService } from './tests.service';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -8,11 +9,13 @@ export class TestsController {
   constructor(private service: TestsService) {}
 
   @Get('templates')
+  @Public()
   listTemplates() {
     return this.service.listTemplates();
   }
 
   @Post(':testId/submit')
+  @Public()
   submit(
     @Param('testId') testId: string,
     @Body() body: { answers: Record<string, any> },

@@ -11,7 +11,11 @@ export default function TestRunner() {
   useEffect(() => {
     fetch(`/api/proxy/api/tests/templates`)
       .then((r) => r.json())
-      .then((t) => setTemplate(t.find((x: any) => x.id === id)));
+      .then((t) => {
+        const found = (t || []).find((x: any) => x.id === id) || (t || [])[0];
+        setTemplate(found || null);
+      })
+      .catch(() => setTemplate(null));
   }, [id]);
 
   const submit = async () => {
@@ -25,7 +29,7 @@ export default function TestRunner() {
     }
   };
 
-  if (!template) return <div className="container px-3 py-8">در حال بارگذاری...</div>;
+  if (!template) return <div className="container px-3 py-8">تستی یافت نشد. <a className="text-blue-600 underline" href="/tests">بازگشت</a></div>;
 
   return (
     <div className="container px-3 py-8 space-y-6">
