@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from '../common/jwt-auth.guard';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -11,6 +12,12 @@ export class OrdersController {
   create(@Body() body: { packageId: string }, @Req() req: any) {
     const userId = req.user?.sub || 'anonymous-user';
     return this.service.create(userId, body.packageId);
+  }
+
+  @Get()
+  @Public()
+  list() {
+    return this.service.list();
   }
 
   @Get(':id')

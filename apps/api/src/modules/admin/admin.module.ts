@@ -5,6 +5,7 @@ import { ExportsController } from './exports.controller';
 import { AdminPostsController } from './admin.posts.controller';
 import { AdminTestsController } from './admin.tests.controller';
 import { AdminSettingsController } from './admin.settings.controller';
+import { AuditService } from '../common/audit.service';
 
-@Module({ controllers: [AdminController, ExportsController, AdminPostsController, AdminTestsController, AdminSettingsController], providers: [PrismaService] })
+@Module({ controllers: [AdminController, ExportsController, AdminPostsController, AdminTestsController, AdminSettingsController], providers: [PrismaService, AuditService] })
 export class AdminModule {}

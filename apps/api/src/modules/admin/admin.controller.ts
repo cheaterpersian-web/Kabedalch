@@ -2,13 +2,14 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@n
 import { PrismaService } from '../common/prisma.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles, RolesGuard } from '../common/roles.guard';
+import { AuditService } from '../common/audit.service';
 
 @ApiTags('admin')
 @Controller('admin')
 @UseGuards(RolesGuard)
 @Roles('admin')
 export class AdminController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private audit: AuditService) {}
 
   @Get('dashboard')
   async dashboard() {
@@ -23,12 +24,12 @@ export class AdminController {
 
   @Post('packages')
   createPackage(@Body() body: any) {
-    return this.prisma.package.create({ data: body });
+    return this.prisma.package.create({ data: body }).then((p) => { this.audit.log(null, 'create', 'package', p.id, body); return p; });
   }
 
   @Patch('packages/:id')
   updatePackage(@Param('id') id: string, @Body() body: any) {
-    return this.prisma.package.update({ where: { id }, data: body });
+    return this.prisma.package.update({ where: { id }, data: body }).then((p) => { this.audit.log(null, 'update', 'package', id, body); return p; });
   }
 
   @Get('packages')
@@ -38,7 +39,7 @@ export class AdminController {
 
   @Delete('packages/:id')
   deletePackage(@Param('id') id: string) {
-    return this.prisma.package.delete({ where: { id } });
+    return this.prisma.package.delete({ where: { id } }).then((p) => { this.audit.log(null, 'delete', 'package', id); return p; });
   }
 
   @Post('testimonials/:id/approve')

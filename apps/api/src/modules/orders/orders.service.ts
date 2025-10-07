@@ -28,4 +28,8 @@ export class OrdersService {
   listByUser(userId: string) {
     return this.prisma.order.findMany({ where: { userId }, orderBy: { createdAt: 'desc' } });
   }
+
+  list() {
+    return this.prisma.order.findMany({ orderBy: { createdAt: 'desc' } });
+  }
 }
