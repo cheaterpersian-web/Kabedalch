@@ -5,3 +5,5 @@
 :root { direction: rtl; }
 
 body { font-family: var(--font-vazir), ui-sans-serif, system-ui; }
+
+img { content-visibility: auto; }
