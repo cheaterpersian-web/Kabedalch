@@ -14,10 +14,10 @@ export default async function PackagesPage({ searchParams }: { searchParams?: { 
   );
   return (
     <div className="space-y-4">
-      <form className="flex gap-2">
-        <input name="q" placeholder="جستجو" className="border rounded p-2" />
-        <input name="max" placeholder="حداکثر قیمت" className="border rounded p-2" />
-        <button className="bg-gray-800 text-white px-4 py-2 rounded">فیلتر</button>
+      <form className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <input name="q" placeholder="جستجو" className="border rounded p-3" />
+        <input name="max" placeholder="حداکثر قیمت" className="border rounded p-3" />
+        <button className="bg-gray-900 text-white px-4 py-3 rounded">فیلتر</button>
       </form>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {filtered.map((p: any) => (
