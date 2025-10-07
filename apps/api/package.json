@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "commonjs",
+  "engines": { "node": ">=20" },
   "scripts": {
     "dev": "nest start --watch",
     "build": "nest build",

@@ -1,15 +1,16 @@
 # API Dockerfile
 FROM node:20-alpine AS deps
 WORKDIR /app
-COPY package.json package-lock.json* .npmrc* ./
-RUN npm ci || npm install
+# Copy root lock and workspace files to install correctly in context ./apps/api
+COPY ../../package.json ../../package-lock.json* ./
+RUN npm ci --omit=dev || npm install --omit=dev
 
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate || true
-RUN npm run build || true
+RUN npx nest build || npm run build || true
 
 FROM node:20-alpine AS runner
 WORKDIR /app
