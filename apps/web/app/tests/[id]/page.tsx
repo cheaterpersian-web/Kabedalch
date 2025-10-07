@@ -27,11 +27,11 @@ export default function TestRunner() {
       });
       const data = await r.json();
       setResult(data);
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'test_submit', { test_id: id, score: data.score, grade: data.grade });
+      }
     } finally {
       setSubmitting(false);
-    }
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'test_submit', { test_id: id, score: data.score, grade: data.grade });
     }
   };
 

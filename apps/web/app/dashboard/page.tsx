@@ -30,7 +30,7 @@ function useAuthFetch<T>(path: string, fallback: T) {
       .then((r) => (r.ok ? r.json() : (fallback as any)))
       .then(setData)
       .catch(() => setData(fallback));
-  }, [path]);
+  }, [path, fallback]);
   return data;
 }
 
