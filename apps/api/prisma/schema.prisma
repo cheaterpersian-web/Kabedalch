@@ -32,6 +32,7 @@ model User {
   phone              String      @unique
   email              String      @unique
   passwordHash       String
+  address            String?
   role               UserRole    @default(user)
   totpSecret         String?     // for optional 2FA
   refreshTokenHash   String?

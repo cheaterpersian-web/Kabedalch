@@ -29,7 +29,7 @@ export default function Header() {
           <Link href="/cart" className="rounded bg-gray-900 text-white px-3 py-1.5">سبد خرید</Link>
           {authed ? (
             <>
-              <Link href="/admin/dashboard" className="text-gray-600">داشبورد</Link>
+              <Link href="/dashboard" className="text-gray-600">داشبورد</Link>
               <button onClick={logout} className="rounded border px-3 py-1.5">خروج</button>
             </>
           ) : (
@@ -52,7 +52,7 @@ export default function Header() {
             <Link href="/cart" className="py-2">سبد خرید</Link>
             {authed ? (
               <>
-                <Link href="/admin/dashboard" className="py-2">داشبورد</Link>
+                <Link href="/dashboard" className="py-2">داشبورد</Link>
                 <button onClick={logout} className="text-right py-2">خروج</button>
               </>
             ) : (
