@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { direction: rtl; }
+
+body { font-family: var(--font-fa), var(--font-en), ui-sans-serif, system-ui; }
+
+img { content-visibility: auto; }
