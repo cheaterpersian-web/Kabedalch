@@ -23,13 +23,17 @@ export class AdminController {
   }
 
   @Post('packages')
-  createPackage(@Body() body: any) {
-    return this.prisma.package.create({ data: body }).then((p) => { this.audit.log(null, 'create', 'package', p.id, body); return p; });
+  async createPackage(@Body() body: any) {
+    const p = await this.prisma.package.create({ data: body });
+    await this.audit.log(null, 'create', 'package', p.id, body);
+    return p;
   }
 
   @Patch('packages/:id')
-  updatePackage(@Param('id') id: string, @Body() body: any) {
-    return this.prisma.package.update({ where: { id }, data: body }).then((p) => { this.audit.log(null, 'update', 'package', id, body); return p; });
+  async updatePackage(@Param('id') id: string, @Body() body: any) {
+    const p = await this.prisma.package.update({ where: { id }, data: body });
+    await this.audit.log(null, 'update', 'package', id, body);
+    return p;
   }
 
   @Get('packages')
@@ -38,8 +42,10 @@ export class AdminController {
   }
 
   @Delete('packages/:id')
-  deletePackage(@Param('id') id: string) {
-    return this.prisma.package.delete({ where: { id } }).then((p) => { this.audit.log(null, 'delete', 'package', id); return p; });
+  async deletePackage(@Param('id') id: string) {
+    const p = await this.prisma.package.delete({ where: { id } });
+    await this.audit.log(null, 'delete', 'package', id);
+    return p;
   }
 
   @Post('testimonials/:id/approve')
