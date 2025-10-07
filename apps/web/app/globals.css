@@ -4,6 +4,6 @@
 
 :root { direction: rtl; }
 
-body { font-family: var(--font-vazir), ui-sans-serif, system-ui; }
+body { font-family: var(--font-fa), var(--font-en), ui-sans-serif, system-ui; }
 
 img { content-visibility: auto; }
