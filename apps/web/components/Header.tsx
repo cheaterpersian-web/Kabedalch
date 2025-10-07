@@ -4,6 +4,18 @@ import Link from 'next/link';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [authed, setAuthed] = useState(false);
+  const logout = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      window.location.href = '/';
+    }
+  };
+  if (typeof window !== 'undefined') {
+    const has = !!localStorage.getItem('accessToken');
+    if (has !== authed) setAuthed(has);
+  }
   return (
     <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
       <nav className="container px-3 py-3 flex items-center gap-3">
@@ -15,9 +27,17 @@ export default function Header() {
           <Link href="/consultation">مشاوره</Link>
           <Link href="/blog">بلاگ</Link>
           <Link href="/cart" className="rounded bg-gray-900 text-white px-3 py-1.5">سبد خرید</Link>
-          <Link href="/admin/dashboard" className="text-gray-600">ادمین</Link>
-          <Link href="/login">ورود</Link>
-          <Link href="/register" className="rounded border px-3 py-1.5">ثبت‌نام</Link>
+          {authed ? (
+            <>
+              <Link href="/admin/dashboard" className="text-gray-600">داشبورد</Link>
+              <button onClick={logout} className="rounded border px-3 py-1.5">خروج</button>
+            </>
+          ) : (
+            <>
+              <Link href="/login">ورود</Link>
+              <Link href="/register" className="rounded border px-3 py-1.5">ثبت‌نام</Link>
+            </>
+          )}
         </div>
         <button aria-label="menu" onClick={()=>setOpen(!open)} className="md:hidden ml-auto rounded border px-3 py-1.5">منو</button>
       </nav>
@@ -30,9 +50,17 @@ export default function Header() {
             <Link href="/consultation" className="py-2">مشاوره</Link>
             <Link href="/blog" className="py-2">بلاگ</Link>
             <Link href="/cart" className="py-2">سبد خرید</Link>
-            <Link href="/admin/dashboard" className="py-2">ادمین</Link>
-            <Link href="/login" className="py-2">ورود</Link>
-            <Link href="/register" className="py-2">ثبت‌نام</Link>
+            {authed ? (
+              <>
+                <Link href="/admin/dashboard" className="py-2">داشبورد</Link>
+                <button onClick={logout} className="text-right py-2">خروج</button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="py-2">ورود</Link>
+                <Link href="/register" className="py-2">ثبت‌نام</Link>
+              </>
+            )}
           </div>
         </div>
       )}
