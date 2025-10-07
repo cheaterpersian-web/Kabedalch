@@ -12,7 +12,7 @@ async function main() {
         priceIRR: 4900000,
         durationDays: 30,
         features: { videos: true, consult: 1, diet: true },
-        tags: ['کبد', 'پایه'],
+        tags: ['کبد', 'پایه', 'liver:نرمال', 'liver:خفیف'],
       },
       {
         title: 'پکیج درمان ترک الکل - مشاوره و پیگیری',
@@ -20,7 +20,7 @@ async function main() {
         priceIRR: 8900000,
         durationDays: 60,
         features: { consult: 8, followup: true },
-        tags: ['الکل', 'مشاوره'],
+        tags: ['الکل', 'مشاوره', 'alcohol:خطر متوسط', 'alcohol:نیاز به ارزیابی تخصصی'],
       },
       {
         title: 'پکیج VIP 3 ماهه',
@@ -28,7 +28,7 @@ async function main() {
         priceIRR: 19900000,
         durationDays: 90,
         features: { videos: true, consult: 6, diet: true, vip: true },
-        tags: ['VIP'],
+        tags: ['VIP', 'liver:شدید', 'alcohol:نیاز به ارزیابی تخصصی'],
       },
     ],
     skipDuplicates: true,
@@ -43,13 +43,33 @@ async function main() {
       name: 'تست کبد چرب',
       questions: [
         { id: 'q1', text: 'احساس خستگی دارید؟', type: 'single', weight: 1, options: [
-          { value: 'never', score: 0 }, { value: 'sometimes', score: 1 }, { value: 'often', score: 2 }
+          { value: 'هرگز', score: 0 }, { value: 'گاهی', score: 1 }, { value: 'اغلب', score: 2 }
         ]},
         { id: 'q2', text: 'شاخص BMI شما؟', type: 'number', weight: 1.5 },
-        { id: 'q3', text: 'سابقه مصرف الکل؟', type: 'single', weight: 2, options: [
-          { value: 'no', score: 0 }, { value: 'light', score: 1 }, { value: 'heavy', score: 3 }
+        { id: 'q3', text: 'درد یا سنگینی در سمت راست شکم دارید؟', type: 'single', weight: 1, options: [
+          { value: 'خیر', score: 0 }, { value: 'خفیف', score: 1 }, { value: 'شدید', score: 2 }
         ]},
-        // ... add up to 10
+        { id: 'q4', text: 'مصرف قند و شیرینی روزانه', type: 'single', weight: 1, options: [
+          { value: 'کم', score: 0 }, { value: 'متوسط', score: 1 }, { value: 'زیاد', score: 2 }
+        ]},
+        { id: 'q5', text: 'مصرف نوشیدنی‌های قندی (نوشابه/انرژی‌زا)', type: 'single', weight: 1, options: [
+          { value: 'ندارم', score: 0 }, { value: 'هفتگی', score: 1 }, { value: 'روزانه', score: 2 }
+        ]},
+        { id: 'q6', text: 'فعالیت بدنی هفتگی', type: 'single', weight: 1, options: [
+          { value: 'بالا', score: 0 }, { value: 'متوسط', score: 1 }, { value: 'کم', score: 2 }
+        ]},
+        { id: 'q7', text: 'آزمایشات اخیر: تری‌گلیسرید بالا؟', type: 'single', weight: 1, options: [
+          { value: 'خیر', score: 0 }, { value: 'مرزی', score: 1 }, { value: 'بالا', score: 2 }
+        ]},
+        { id: 'q8', text: 'آزمایشات اخیر: ALT/AST بالا؟', type: 'single', weight: 1, options: [
+          { value: 'خیر', score: 0 }, { value: 'خفیف', score: 1 }, { value: 'بالا', score: 2 }
+        ]},
+        { id: 'q9', text: 'سابقه دیابت یا پیش‌دیابت', type: 'single', weight: 1.5, options: [
+          { value: 'خیر', score: 0 }, { value: 'پیش‌دیابت', score: 1 }, { value: 'دیابت', score: 2 }
+        ]},
+        { id: 'q10', text: 'سابقه مصرف الکل', type: 'single', weight: 2, options: [
+          { value: 'ندارم', score: 0 }, { value: 'گاهی', score: 1 }, { value: 'زیاد', score: 3 }
+        ]},
       ],
       scoringLogic: { liver: [
         { max: 4, grade: 'نرمال' },
@@ -69,12 +89,35 @@ async function main() {
       name: 'تست سنجش اعتیاد به الکل',
       questions: [
         { id: 'a1', text: 'چند وقت یکبار الکل مصرف می‌کنید؟', type: 'single', weight: 1, options: [
-          { value: 'never', score: 0 }, { value: 'monthly', score: 1 }, { value: 'weekly', score: 2 }, { value: 'daily', score: 4 }
+          { value: 'هرگز', score: 0 }, { value: 'ماهانه', score: 1 }, { value: 'هفتگی', score: 2 }, { value: 'روزانه', score: 4 }
         ]},
         { id: 'a2', text: 'در یک نوبت چند واحد مصرف می‌کنید؟', type: 'single', weight: 1, options: [
-          { value: '1-2', score: 0 }, { value: '3-4', score: 1 }, { value: '5-6', score: 2 }, { value: '7+', score: 4 }
+          { value: '۱-۲', score: 0 }, { value: '۳-۴', score: 1 }, { value: '۵-۶', score: 2 }, { value: '۷+', score: 4 }
         ]},
-        // ... add up to 10
+        { id: 'a3', text: 'آیا برای شروع روز نیاز به مصرف دارید؟', type: 'single', weight: 1, options: [
+          { value: 'خیر', score: 0 }, { value: 'گاهی', score: 2 }, { value: 'بله', score: 4 }
+        ]},
+        { id: 'a4', text: 'کنترل مصرف برایتان دشوار است؟', type: 'single', weight: 1, options: [
+          { value: 'خیر', score: 0 }, { value: 'گاهی', score: 2 }, { value: 'بله', score: 4 }
+        ]},
+        { id: 'a5', text: 'آیا به شما توصیه شده مصرف را کم/قطع کنید؟', type: 'single', weight: 1, options: [
+          { value: 'خیر', score: 0 }, { value: 'بله', score: 2 }
+        ]},
+        { id: 'a6', text: 'تداخل با کار/خانواده به دلیل مصرف', type: 'single', weight: 1, options: [
+          { value: 'خیر', score: 0 }, { value: 'گاهی', score: 2 }, { value: 'بله', score: 4 }
+        ]},
+        { id: 'a7', text: 'علائم ترک (لرزش، تعریق، اضطراب)', type: 'single', weight: 1, options: [
+          { value: 'خیر', score: 0 }, { value: 'خفیف', score: 2 }, { value: 'شدید', score: 4 }
+        ]},
+        { id: 'a8', text: 'مصرف برای مقابله با استرس', type: 'single', weight: 1, options: [
+          { value: 'خیر', score: 0 }, { value: 'گاهی', score: 2 }, { value: 'بله', score: 3 }
+        ]},
+        { id: 'a9', text: 'سابقه تلاش برای ترک', type: 'single', weight: 1, options: [
+          { value: 'نداشته‌ام', score: 0 }, { value: '۱-۲ بار', score: 1 }, { value: '۳+ بار', score: 2 }
+        ]},
+        { id: 'a10', text: 'سابقه خانوادگی وابستگی به الکل', type: 'single', weight: 1, options: [
+          { value: 'خیر', score: 0 }, { value: 'بله', score: 2 }
+        ]},
       ],
       scoringLogic: { alcohol: [
         { max: 7, grade: 'کم‌خطر' },
