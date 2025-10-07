@@ -11,7 +11,11 @@
     "dev": "npm -ws run dev",
     "lint": "npm -ws run lint",
     "test": "npm -ws run test",
-    "format": "prettier -w ."
+    "format": "prettier -w .",
+    "prisma:generate": "npm --workspace=apps/api run prisma:generate || npx prisma generate --schema apps/api/prisma/schema.prisma",
+    "prisma:migrate:deploy": "npm --workspace=apps/api run prisma:deploy || npx prisma migrate deploy --schema apps/api/prisma/schema.prisma",
+    "prisma:seed": "npm --workspace=apps/api run prisma:seed || node apps/api/prisma/seed.js",
+    "postinstall": "npm run prisma:generate"
   },
   "devDependencies": {
     "prettier": "3.3.3",
