@@ -43,13 +43,13 @@ services:
       - postgres
       - redis
     ports:
-      - '${API_PORT:-3001}:3001'
+      - '${API_PORT:-3201}:3001'
 
   web:
     build: ./apps/web
     environment:
-      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:3001}
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:3201}
     depends_on:
       - api
     ports:
-      - '${WEB_PORT:-3000}:3000'
+      - '${WEB_PORT:-3200}:3000'
