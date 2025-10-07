@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 async function fetchPosts() {
   const base = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
   const res = await fetch(`${base}/api/posts`, { next: { revalidate: 60 } });
