@@ -4,6 +4,7 @@ async function fetchPackages() {
   return res.json();
 }
 
+export const dynamic = 'force-dynamic';
 export default async function PackagesPage({ searchParams }: { searchParams?: { q?: string; max?: string } }) {
   const packages = await fetchPackages();
   const q = searchParams?.q?.toLowerCase() || '';

@@ -4,7 +4,7 @@ async function getOrders() {
   return res.json();
 }
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 export default async function AdminOrdersPage() {
   const list = await getOrders();
   return (

@@ -4,6 +4,7 @@ async function fetchDashboard() {
   return res.json();
 }
 
+export const dynamic = 'force-dynamic';
 export default async function AdminDashboard() {
   const d = await fetchDashboard();
   return (

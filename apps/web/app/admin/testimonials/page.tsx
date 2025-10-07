@@ -4,7 +4,7 @@ async function getPending() {
   return res.json();
 }
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 export default async function AdminTestimonialsPage() {
   const list = await getPending();
   return (

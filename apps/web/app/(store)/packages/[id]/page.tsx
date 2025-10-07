@@ -1,4 +1,5 @@
 import Image from 'next/image';
+export const dynamic = 'force-dynamic';
 async function fetchPackage(id: string) {
   const base = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
   const res = await fetch(`${base}/api/packages/${id}`, { cache: 'no-store' });
