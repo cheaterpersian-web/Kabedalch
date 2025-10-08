@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
+import { TwoFaController } from './2fa.controller';
 import { PrismaService } from '../common/prisma.service';
 import { CryptoService } from '../common/crypto.service';
 import { RedisService } from '../common/redis.service';
@@ -17,7 +18,7 @@ import { JwtStrategy } from './jwt.strategy';
       signOptions: { expiresIn: '15m' },
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, TwoFaController],
   providers: [AuthService, PrismaService, CryptoService, JwtStrategy, RedisService, RateLimitGuard],
   exports: [AuthService],
 })
