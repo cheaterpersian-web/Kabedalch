@@ -10,12 +10,12 @@ COPY package.json ./
 
 # Install minimal build dependencies
 RUN npm install --omit=dev --omit=optional --no-audit --no-fund --no-save \
-    @nestjs/core @nestjs/common @nestjs/platform-express typescript \
+    @nestjs/core @nestjs/common @nestjs/platform-express typescript @nestjs/cli \
     && npm cache clean --force
 
 # Copy source and build
 COPY . .
-RUN npx prisma generate && npx tsc -p tsconfig.build.json
+RUN npx prisma generate && nest build
 
 # Clean up after build
 RUN rm -rf node_modules && npm cache clean --force
