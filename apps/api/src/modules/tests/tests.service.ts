@@ -185,6 +185,7 @@ export class TestsService {
       if (grade.includes('خطر متوسط')) return 'مصرف در محدوده خطر متوسط. کاهش مصرف و مشاوره تخصصی توصیه می‌شود.';
       if (grade.includes('پرخطر')) return 'مصرف پرخطر. ارزیابی تخصصی و برنامه ترک تحت نظر کارشناس توصیه می‌شود.';
     }
-    return '';
+    // Fallback description to avoid empty final answers in edge cases
+    return 'نتیجه ارزیابی آماده است. برای دریافت راهنمایی دقیق‌تر، از پکیج‌های پیشنهادی و مشاوره تخصصی استفاده کنید.';
   }
 }
