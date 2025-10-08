@@ -45,7 +45,8 @@ async function main() {
         { id: 'q1', text: 'در یک ماه گذشته، چند بار احساس خستگی مفرط داشته‌اید؟', type: 'single', weight: 1, options: [
           { value: 'هرگز', score: 0 }, { value: 'گاهی', score: 1 }, { value: 'اغلب', score: 2 }
         ]},
-        { id: 'q2', text: 'شاخص BMI شما؟', type: 'number', weight: 1.5 },
+        { id: 'q2a', text: 'وزن شما (کیلوگرم)', type: 'number', weight: 0.8 },
+        { id: 'q2b', text: 'قد شما (سانتی‌متر)', type: 'number', weight: 0.7 },
         { id: 'q3', text: 'درد یا سنگینی در سمت راست شکم (ناحیه کبد) دارید؟', type: 'single', weight: 1, options: [
           { value: 'خیر', score: 0 }, { value: 'خفیف', score: 1 }, { value: 'شدید', score: 2 }
         ]},
@@ -97,7 +98,8 @@ async function main() {
         { id: 'q1', text: 'در یک ماه گذشته، چند بار احساس خستگی مفرط داشته‌اید؟', type: 'single', weight: 1, options: [
           { value: 'هرگز', score: 0 }, { value: 'گاهی', score: 1 }, { value: 'اغلب', score: 2 }
         ]},
-        { id: 'q2', text: 'شاخص BMI شما؟', type: 'number', weight: 1.5 },
+        { id: 'q2a', text: 'وزن شما (کیلوگرم)', type: 'number', weight: 0.8 },
+        { id: 'q2b', text: 'قد شما (سانتی‌متر)', type: 'number', weight: 0.7 },
         { id: 'q3', text: 'درد یا سنگینی در سمت راست شکم (ناحیه کبد) دارید؟', type: 'single', weight: 1, options: [
           { value: 'خیر', score: 0 }, { value: 'خفیف', score: 1 }, { value: 'شدید', score: 2 }
         ]},
