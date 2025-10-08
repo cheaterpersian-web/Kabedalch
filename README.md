@@ -4,13 +4,20 @@ Monorepo شامل `apps/api` (NestJS) و `apps/web` (Next.js) با TypeScript.
 
 ## 🚀 نصب سریع
 
-### Linux/macOS:
+### اگر Node.js نصب نیست:
 ```bash
-./quick-install.sh
+# Linux/macOS
+./install-node.sh
+
+# Windows: از https://nodejs.org/ دانلود کنید
 ```
 
-### Windows:
-```cmd
+### نصب پروژه:
+```bash
+# Linux/macOS
+./quick-install.sh
+
+# Windows
 quick-install.bat
 ```
 

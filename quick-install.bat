@@ -4,6 +4,24 @@ chcp 65001 >nul
 echo 🚀 Kabedalch - Quick Install
 echo ============================
 
+REM بررسی Node.js و npm
+node --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo ❌ Node.js نصب نیست. لطفاً Node.js 20+ نصب کنید.
+    echo    برای نصب: https://nodejs.org/
+    pause
+    exit /b 1
+)
+
+npm --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo ❌ npm نصب نیست. لطفاً npm نصب کنید.
+    pause
+    exit /b 1
+)
+
+echo ✅ Node.js و npm پیدا شد
+
 echo 📦 نصب dependencies...
 npm install
 
