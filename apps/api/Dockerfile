@@ -2,10 +2,10 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Install dependencies
+# Install all dependencies (including dev for build)
 RUN apk add --no-cache openssl
 COPY package.json ./
-RUN npm install --omit=dev --no-audit --no-fund
+RUN npm install --no-audit --no-fund
 
 # Copy source and build
 COPY . .
@@ -18,11 +18,12 @@ ENV NODE_ENV=production
 
 # Install only runtime dependencies
 RUN apk add --no-cache openssl
+COPY package.json ./
+RUN npm install --omit=dev --no-audit --no-fund
 
 # Copy only necessary files
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/prisma ./prisma
-COPY package.json ./
 
 CMD ["sh", "-c", "npx prisma migrate deploy; npx prisma db push; node dist/main.js"]
