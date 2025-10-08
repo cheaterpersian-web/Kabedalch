@@ -133,9 +133,9 @@ export class TestsService {
       else if (score <= 14) grade = 'Grade 2 (متوسط)';
       else grade = 'Grade 3 (شدید)';
     } else if (template.type === 'alcohol') {
-      if (score <= 7) grade = 'Low Risk';
-      else if (score <= 15) grade = 'Moderate Risk';
-      else grade = 'High Risk';
+      if (score <= 7) grade = 'کم‌خطر';
+      else if (score <= 15) grade = 'خطر متوسط';
+      else grade = 'پرخطر';
     }
 
     // Simple mapping: choose first matching package by tag
