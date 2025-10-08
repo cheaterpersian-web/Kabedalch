@@ -4,8 +4,8 @@ WORKDIR /app
 
 # Install dependencies
 RUN apk add --no-cache openssl
-COPY package.json package-lock.json* ./
-RUN npm ci --only=production --no-audit --no-fund
+COPY package.json ./
+RUN npm install --omit=dev --no-audit --no-fund
 
 # Copy source and build
 COPY . .
