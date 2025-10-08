@@ -17,8 +17,8 @@ RUN npm install --no-audit --no-fund \
 COPY . .
 RUN npx prisma generate && npx nest build
 
-# Clean up after build
-RUN rm -rf node_modules && npm cache clean --force
+# Keep node_modules for copying to runner stage
+RUN npm cache clean --force
 
 # Production stage - ultra minimal
 FROM node:20-alpine AS runner
