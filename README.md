@@ -41,6 +41,20 @@ docker compose exec api npm run prisma:seed
 - Docker + docker-compose
 - PostgreSQL (برای development)
 
+## 🔄 به‌روزرسانی پروژه
+
+### روی VPS:
+```bash
+# Update خودکار
+./update.sh
+
+# یا دستی
+git pull origin main
+npm install
+npm run build
+docker-compose down && docker-compose up -d --build
+```
+
 اطلاعات آزمایشی seed شامل پکیج‌ها، رضایت‌نامه‌ها، و تمپلیت تست‌هاست.
 
 ## حساب ادمین نمونه
