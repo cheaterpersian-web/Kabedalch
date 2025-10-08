@@ -11,6 +11,7 @@ COPY package.json ./
 # Install build dependencies
 RUN npm install --omit=dev --omit=optional --no-audit --no-fund --no-save \
     @nestjs/core @nestjs/common @nestjs/platform-express typescript \
+    @types/cookie-parser @types/csurf @types/express @types/bcrypt @types/passport-jwt \
     && npm install -g @nestjs/cli --no-audit --no-fund \
     && npm cache clean --force
 
