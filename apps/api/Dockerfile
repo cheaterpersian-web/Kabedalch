@@ -8,9 +8,10 @@ RUN apk add --no-cache openssl
 # Copy package files
 COPY package.json ./
 
-# Install minimal build dependencies
+# Install build dependencies
 RUN npm install --omit=dev --omit=optional --no-audit --no-fund --no-save \
-    @nestjs/core @nestjs/common @nestjs/platform-express typescript @nestjs/cli \
+    @nestjs/core @nestjs/common @nestjs/platform-express typescript \
+    && npm install -g @nestjs/cli --no-audit --no-fund \
     && npm cache clean --force
 
 # Copy source and build
