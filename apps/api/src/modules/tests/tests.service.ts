@@ -175,10 +175,10 @@ export class TestsService {
 
   private describeGrade(type: string, grade: string): string {
     if (type === 'liver') {
-      if (grade.includes('نرمال')) return 'نتیجه نرمال است. با حفظ سبک زندگی سالم ادامه دهید.';
-      if (grade.includes('خفیف')) return 'کبد چرب خفیف. اصلاح تغذیه، کاهش وزن و فعالیت بدنی توصیه می‌شود.';
-      if (grade.includes('متوسط')) return 'کبد چرب متوسط. پیگیری پزشکی و برنامه مداخله سبک زندگی توصیه می‌شود.';
-      if (grade.includes('شدید')) return 'کبد چرب شدید. ارزیابی تخصصی و درمان تحت نظر پزشک ضروری است.';
+      if (grade.includes('Grade 0')) return 'نتیجه نرمال است. برای حفظ سلامت کبد، برنامه سبک زندگی و محصولات حمایتی ما را دنبال کنید.';
+      if (grade.includes('Grade 1')) return 'کبد چرب گرید ۱ (خفیف). اجرای برنامه تغذیه و استفاده از محصولات حمایتی ما توصیه می‌شود.';
+      if (grade.includes('Grade 2')) return 'کبد چرب گرید ۲ (متوسط). از برنامه‌های تخصصی ما برای کاهش چربی کبد بهره بگیرید.';
+      if (grade.includes('Grade 3')) return 'کبد چرب گرید ۳ (شدید). پیشنهاد می‌کنیم از بسته‌های کامل بازسازی کبد ما استفاده کنید.';
     }
     if (type === 'alcohol') {
       if (grade.includes('کم‌خطر')) return 'الگوی مصرف کم‌خطر. پرهیز یا محدودسازی بیشتر توصیه می‌شود.';
