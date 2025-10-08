@@ -15,7 +15,7 @@ RUN npm install --omit=dev --omit=optional --no-audit --no-fund --no-save \
 
 # Copy source and build
 COPY . .
-RUN npx prisma generate && nest build
+RUN npx prisma generate && npx nest build
 
 # Clean up after build
 RUN rm -rf node_modules && npm cache clean --force
