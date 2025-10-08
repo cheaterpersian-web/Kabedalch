@@ -156,8 +156,8 @@ async function main() {
         { id: 'a1', text: 'چند وقت یکبار الکل مصرف می‌کنید؟', type: 'single', weight: 1, options: [
           { value: 'هرگز', score: 0 }, { value: 'ماهانه', score: 1 }, { value: 'هفتگی', score: 2 }, { value: 'روزانه', score: 4 }
         ]},
-        { id: 'a2', text: 'در یک نوبت معمولاً چند واحد مصرف می‌کنید؟', type: 'single', weight: 1, options: [
-          { value: '۱-۲', score: 0 }, { value: '۳-۴', score: 1 }, { value: '۵-۶', score: 2 }, { value: '۷+', score: 4 }
+        { id: 'a2', text: 'در یک نوبت معمولاً چند سی‌سی مصرف می‌کنید؟', type: 'single', weight: 1, options: [
+          { value: '۵۰ سی‌سی', score: 0 }, { value: '۱۰۰ سی‌سی', score: 1 }, { value: '۱۵۰ سی‌سی', score: 2 }, { value: '۲۰۰+ سی‌سی', score: 4 }
         ]},
         { id: 'a3', text: 'آیا برای شروع روز نیاز به مصرف دارید؟', type: 'single', weight: 1, options: [
           { value: 'خیر', score: 0 }, { value: 'گاهی', score: 2 }, { value: 'بله', score: 4 }
@@ -212,8 +212,8 @@ async function main() {
         { id: 'a1', text: 'چند وقت یکبار الکل مصرف می‌کنید؟', type: 'single', weight: 1, options: [
           { value: 'هرگز', score: 0 }, { value: 'ماهانه', score: 1 }, { value: 'هفتگی', score: 2 }, { value: 'روزانه', score: 4 }
         ]},
-        { id: 'a2', text: 'در یک نوبت معمولاً چند واحد مصرف می‌کنید؟', type: 'single', weight: 1, options: [
-          { value: '۱-۲', score: 0 }, { value: '۳-۴', score: 1 }, { value: '۵-۶', score: 2 }, { value: '۷+', score: 4 }
+        { id: 'a2', text: 'در یک نوبت معمولاً چند سی‌سی مصرف می‌کنید؟', type: 'single', weight: 1, options: [
+          { value: '۵۰ سی‌سی', score: 0 }, { value: '۱۰۰ سی‌سی', score: 1 }, { value: '۱۵۰ سی‌سی', score: 2 }, { value: '۲۰۰+ سی‌سی', score: 4 }
         ]},
         { id: 'a3', text: 'آیا برای شروع روز نیاز به مصرف دارید؟', type: 'single', weight: 1, options: [
           { value: 'خیر', score: 0 }, { value: 'گاهی', score: 2 }, { value: 'بله', score: 4 }
