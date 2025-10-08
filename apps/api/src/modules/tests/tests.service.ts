@@ -128,14 +128,14 @@ export class TestsService {
 
     let grade = 'نامشخص';
     if (template.type === 'liver') {
-      if (score <= 4) grade = 'نرمال';
-      else if (score <= 9) grade = 'خفیف';
-      else if (score <= 14) grade = 'متوسط';
-      else grade = 'شدید';
+      if (score <= 4) grade = 'Grade 0 (نرمال)';
+      else if (score <= 9) grade = 'Grade 1 (خفیف)';
+      else if (score <= 14) grade = 'Grade 2 (متوسط)';
+      else grade = 'Grade 3 (شدید)';
     } else if (template.type === 'alcohol') {
-      if (score <= 7) grade = 'کم‌خطر';
-      else if (score <= 15) grade = 'خطر متوسط';
-      else grade = 'پرخطر';
+      if (score <= 7) grade = 'Low Risk';
+      else if (score <= 15) grade = 'Moderate Risk';
+      else grade = 'High Risk';
     }
 
     // Simple mapping: choose first matching package by tag
