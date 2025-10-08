@@ -1,27 +1,32 @@
-# API Dockerfile - Optimized for space
+# API Dockerfile - Space optimized
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Install all dependencies (including dev for build)
+# Install build dependencies
 RUN apk add --no-cache openssl
 COPY package.json ./
-RUN npm install --no-audit --no-fund
+
+# Install build tools only
+RUN npm install -g @nestjs/cli typescript --no-audit --no-fund
+
+# Install production dependencies
+RUN npm install --omit=dev --no-audit --no-fund --no-optional
 
 # Copy source and build
 COPY . .
-RUN npx prisma generate && npm run build
+RUN npx prisma generate && nest build
 
 # Production stage
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-# Install only runtime dependencies
+# Install runtime dependencies
 RUN apk add --no-cache openssl
 COPY package.json ./
-RUN npm install --omit=dev --no-audit --no-fund
+RUN npm install --omit=dev --no-audit --no-fund --no-optional
 
-# Copy only necessary files
+# Copy built application
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/prisma ./prisma
