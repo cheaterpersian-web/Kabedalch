@@ -2,23 +2,37 @@
 
 Monorepo شامل `apps/api` (NestJS) و `apps/web` (Next.js) با TypeScript.
 
-## شروع سریع (محلی)
+## 🚀 نصب سریع
 
-- Node.js 20+
-- Docker + docker-compose
+### Linux/macOS:
+```bash
+./quick-install.sh
+```
 
+### Windows:
+```cmd
+quick-install.bat
+```
+
+### نصب دستی:
 ```bash
 npm i
-# اجرای سرویس‌ها
 docker compose up -d --build
-# اعمال مایگریشن
 docker compose exec api npx prisma migrate deploy
-# مقداردهی اولیه (اختیاری محیط dev)
 docker compose exec api npm run prisma:seed
 ```
 
-- API: `http://localhost:3001/api/docs` (Swagger)
-- Web: `http://localhost:3000`
+## 🌐 دسترسی
+
+- **API:** `http://localhost:3001/api/docs` (Swagger)
+- **Web:** `http://localhost:3000`
+- **Admin:** `http://localhost:3000/admin`
+
+## 📋 پیش‌نیازها
+
+- Node.js 20+
+- Docker + docker-compose
+- PostgreSQL (برای development)
 
 اطلاعات آزمایشی seed شامل پکیج‌ها، رضایت‌نامه‌ها، و تمپلیت تست‌هاست.
 
