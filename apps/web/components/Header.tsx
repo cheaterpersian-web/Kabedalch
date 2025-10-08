@@ -30,6 +30,7 @@ export default function Header() {
           {authed ? (
             <>
               <Link href="/dashboard" className="text-gray-600">داشبورد</Link>
+              <Link href="/admin/dashboard" className="text-gray-600">ادمین</Link>
               <button onClick={logout} className="rounded border px-3 py-1.5">خروج</button>
             </>
           ) : (
