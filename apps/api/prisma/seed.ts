@@ -59,10 +59,10 @@ async function main() {
           { value: 'بالا', score: 0 }, { value: 'متوسط', score: 1 }, { value: 'کم', score: 2 }
         ]},
         { id: 'q7', text: 'آزمایشات اخیر: تری‌گلیسرید بالا؟', type: 'single', weight: 1, options: [
-          { value: 'خیر', score: 0 }, { value: 'مرزی', score: 1 }, { value: 'بالا', score: 2 }
+          { value: 'خیر', score: 0 }, { value: 'مرزی', score: 1 }, { value: 'بالا', score: 2 }, { value: 'آزمایش نداده‌ام', score: 0 }
         ]},
         { id: 'q8', text: 'آزمایشات اخیر: ALT/AST بالا؟', type: 'single', weight: 1, options: [
-          { value: 'خیر', score: 0 }, { value: 'خفیف', score: 1 }, { value: 'بالا', score: 2 }
+          { value: 'خیر', score: 0 }, { value: 'خفیف', score: 1 }, { value: 'بالا', score: 2 }, { value: 'آزمایش نداده‌ام', score: 0 }
         ]},
         { id: 'q9', text: 'سابقه دیابت یا پیش‌دیابت', type: 'single', weight: 1.5, options: [
           { value: 'خیر', score: 0 }, { value: 'پیش‌دیابت', score: 1 }, { value: 'دیابت', score: 2 }
@@ -111,10 +111,10 @@ async function main() {
           { value: 'بالا', score: 0 }, { value: 'متوسط', score: 1 }, { value: 'کم', score: 2 }
         ]},
         { id: 'q7', text: 'آزمایشات اخیر: تری‌گلیسرید بالا؟', type: 'single', weight: 1, options: [
-          { value: 'خیر', score: 0 }, { value: 'مرزی', score: 1 }, { value: 'بالا', score: 2 }
+          { value: 'خیر', score: 0 }, { value: 'مرزی', score: 1 }, { value: 'بالا', score: 2 }, { value: 'آزمایش نداده‌ام', score: 0 }
         ]},
         { id: 'q8', text: 'آزمایشات اخیر: ALT/AST بالا؟', type: 'single', weight: 1, options: [
-          { value: 'خیر', score: 0 }, { value: 'خفیف', score: 1 }, { value: 'بالا', score: 2 }
+          { value: 'خیر', score: 0 }, { value: 'خفیف', score: 1 }, { value: 'بالا', score: 2 }, { value: 'آزمایش نداده‌ام', score: 0 }
         ]},
         { id: 'q9', text: 'سابقه دیابت یا پیش‌دیابت', type: 'single', weight: 1.5, options: [
           { value: 'خیر', score: 0 }, { value: 'پیش‌دیابت', score: 1 }, { value: 'دیابت', score: 2 }
