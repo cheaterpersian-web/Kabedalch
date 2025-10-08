@@ -118,7 +118,8 @@ export default function TestRunner() {
       {result && (
         <div className="border rounded p-4 space-y-2">
           <div>نمره کل: {result.score}</div>
-          <div>تفسیر بالینی: {result.grade}</div>
+          <div>نتیجه: {result.grade}</div>
+          {result.gradeDescription && <div className="text-gray-700">{result.gradeDescription}</div>}
           {result.recommendedPackages?.[0] && (
             <a className="text-blue-600 underline" href={`/packages/${result.recommendedPackages[0].id}`}>پکیج پیشنهادی</a>
           )}

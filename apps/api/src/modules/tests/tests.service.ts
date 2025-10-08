@@ -135,7 +135,7 @@ export class TestsService {
     } else if (template.type === 'alcohol') {
       if (score <= 7) grade = 'کم‌خطر';
       else if (score <= 15) grade = 'خطر متوسط';
-      else grade = 'نیاز به ارزیابی تخصصی';
+      else grade = 'پرخطر';
     }
 
     // Simple mapping: choose first matching package by tag
@@ -163,6 +163,7 @@ export class TestsService {
     return {
       score,
       grade,
+      gradeDescription: this.describeGrade(template.type as string, grade),
       recommendedPackages: recommended ? [recommended] : [],
       resultId: result.id,
     };
@@ -170,5 +171,20 @@ export class TestsService {
 
   resultsForUser(userId: string) {
     return this.prisma.testResult.findMany({ where: { userId }, orderBy: { createdAt: 'desc' } });
+  }
+
+  private describeGrade(type: string, grade: string): string {
+    if (type === 'liver') {
+      if (grade.includes('نرمال')) return 'نتیجه نرمال است. با حفظ سبک زندگی سالم ادامه دهید.';
+      if (grade.includes('خفیف')) return 'کبد چرب خفیف. اصلاح تغذیه، کاهش وزن و فعالیت بدنی توصیه می‌شود.';
+      if (grade.includes('متوسط')) return 'کبد چرب متوسط. پیگیری پزشکی و برنامه مداخله سبک زندگی توصیه می‌شود.';
+      if (grade.includes('شدید')) return 'کبد چرب شدید. ارزیابی تخصصی و درمان تحت نظر پزشک ضروری است.';
+    }
+    if (type === 'alcohol') {
+      if (grade.includes('کم‌خطر')) return 'الگوی مصرف کم‌خطر. پرهیز یا محدودسازی بیشتر توصیه می‌شود.';
+      if (grade.includes('خطر متوسط')) return 'مصرف در محدوده خطر متوسط. کاهش مصرف و مشاوره تخصصی توصیه می‌شود.';
+      if (grade.includes('پرخطر')) return 'مصرف پرخطر. ارزیابی تخصصی و برنامه ترک تحت نظر کارشناس توصیه می‌شود.';
+    }
+    return 'نیاز به ارزیابی بیشتر.';
   }
 }
