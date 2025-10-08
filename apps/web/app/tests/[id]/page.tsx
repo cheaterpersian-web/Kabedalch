@@ -8,6 +8,8 @@ export default function TestRunner() {
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [result, setResult] = useState<any | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [i, setI] = useState(0);
+  const [fading, setFading] = useState(false);
 
   useEffect(() => {
     fetch(`/api/proxy/api/tests/${id}`)
@@ -34,49 +36,85 @@ export default function TestRunner() {
 
   if (!template) return <div className="container px-3 py-8">تستی یافت نشد. <a className="text-blue-600 underline" href="/tests">بازگشت</a></div>;
 
+  const total = template?.questions?.length || 0;
+
+  const go = (dir: 1 | -1) => {
+    if (!template) return;
+    const next = i + dir;
+    if (next < 0 || next >= template.questions.length) return;
+    setFading(true);
+    setTimeout(() => {
+      setI(next);
+      setFading(false);
+    }, 120);
+  };
+
+  const current = template?.questions?.[i];
+
+  const isAnswered = (q: any) => {
+    const v = answers[q.id];
+    if (q.type === 'number') return typeof v === 'number' && !Number.isNaN(v);
+    if (q.type === 'multi') return Array.isArray(v) && v.length > 0;
+    return !!v;
+  };
+
+  const onNext = () => {
+    if (!template) return;
+    if (i < total - 1) return go(1);
+    return submit();
+  };
+
   return (
     <div className="container px-3 py-8 space-y-6">
       <h1 className="text-xl md:text-2xl font-bold">{template.name}</h1>
-      <div className="text-sm text-gray-600">لطفاً به پرسش‌ها با دقت پاسخ دهید. برخی پرسش‌ها نوع شدت یا بسامد را می‌سنجند.</div>
-      <div className="space-y-4">
-        {template.questions.map((q: any, idx: number) => (
-          <div key={q.id} className="border p-3 rounded">
-            <div className="font-semibold mb-2">{idx+1}. {q.text}</div>
-            {q.type === 'number' ? (
-              <input className="border rounded p-3 w-full" type="number" min={0} step={0.1} placeholder="مثلاً ۲۴.۵"
-                     onChange={(e) => setAnswers({ ...answers, [q.id]: Number(e.target.value) })} />
-            ) : q.type === 'single' ? (
-              <div className="space-y-2">
-                {(q.options || []).map((o: any) => (
-                  <label key={o.value} className="flex items-center gap-2">
-                    <input type="radio" name={q.id} value={o.value}
-                           checked={answers[q.id] === o.value}
-                           onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })} />
-                    <span>{o.value}</span>
-                  </label>
-                ))}
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {(q.options || []).map((o: any) => (
-                  <label key={o.value} className="flex items-center gap-2">
-                    <input type="checkbox" checked={Array.isArray(answers[q.id]) && (answers[q.id] || []).includes(o.value)}
-                           onChange={(e) => {
-                             const arr = new Set([...(answers[q.id] || [])]);
-                             e.target.checked ? arr.add(o.value) : arr.delete(o.value);
-                             setAnswers({ ...answers, [q.id]: Array.from(arr) });
-                           }} />
-                    <span>{o.value}</span>
-                  </label>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+      <div className="flex items-center justify-between text-sm text-gray-600">
+        <div>پرسش {Math.min(i+1, total)} از {total}</div>
+        <div className="h-2 bg-gray-200 rounded w-40 overflow-hidden">
+          <div className="h-full bg-green-600 transition-all" style={{ width: `${total? ((i+1)/total)*100 : 0}%` }} />
+        </div>
       </div>
-      <button disabled={submitting} onClick={submit} className="bg-green-600 text-white px-4 py-3 rounded w-full md:w-auto disabled:opacity-60">
-        {submitting ? 'در حال ارسال...' : 'ثبت نتیجه'}
-      </button>
+
+      {current && (
+        <div className={`border p-3 rounded transition-all duration-200 ${fading ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'}`}>
+          <div className="font-semibold mb-2">{i+1}. {current.text}</div>
+          {current.type === 'number' ? (
+            <input className="border rounded p-3 w-full" type="number" min={0} step={0.1} placeholder="مثلاً ۲۴.۵"
+                   onChange={(e) => setAnswers({ ...answers, [current.id]: Number(e.target.value) })} />
+          ) : current.type === 'single' ? (
+            <div className="space-y-2">
+              {(current.options || []).map((o: any) => (
+                <label key={o.value} className="flex items-center gap-2">
+                  <input type="radio" name={current.id} value={o.value}
+                         checked={answers[current.id] === o.value}
+                         onChange={(e) => setAnswers({ ...answers, [current.id]: e.target.value })} />
+                  <span>{o.value}</span>
+                </label>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {(current.options || []).map((o: any) => (
+                <label key={o.value} className="flex items-center gap-2">
+                  <input type="checkbox" checked={Array.isArray(answers[current.id]) && (answers[current.id] || []).includes(o.value)}
+                         onChange={(e) => {
+                           const arr = new Set([...(answers[current.id] || [])]);
+                           e.target.checked ? arr.add(o.value) : arr.delete(o.value);
+                           setAnswers({ ...answers, [current.id]: Array.from(arr) });
+                         }} />
+                  <span>{o.value}</span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="flex items-center justify-between gap-3">
+        <button onClick={() => go(-1)} disabled={i===0 || submitting} className="px-3 py-2 rounded border disabled:opacity-60">قبلی</button>
+        <button onClick={onNext} disabled={!current || !isAnswered(current) || submitting} className="px-4 py-2 rounded bg-green-600 text-white disabled:opacity-60">
+          {i < total - 1 ? 'بعدی' : (submitting ? 'در حال ارسال...' : 'پایان و ثبت')}
+        </button>
+      </div>
       {result && (
         <div className="border rounded p-4 space-y-2">
           <div>نمره کل: {result.score}</div>
