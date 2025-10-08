@@ -1,4 +1,4 @@
-# API Dockerfile - Extreme space optimization
+# API Dockerfile - Distroless approach (alternative)
 FROM node:20-alpine AS builder
 WORKDIR /app
 
@@ -10,23 +10,15 @@ COPY package.json ./
 
 # Install minimal build dependencies
 RUN npm install --omit=dev --omit=optional --no-audit --no-fund --no-save \
-    @nestjs/core @nestjs/common @nestjs/platform-express typescript \
-    && npm cache clean --force
+    @nestjs/core @nestjs/common @nestjs/platform-express typescript
 
 # Copy source and build
 COPY . .
 RUN npx prisma generate && npx tsc -p tsconfig.build.json
 
-# Clean up after build
-RUN rm -rf node_modules && npm cache clean --force
-
-# Production stage - ultra minimal
-FROM node:20-alpine AS runner
+# Production stage - distroless
+FROM gcr.io/distroless/nodejs20-debian12
 WORKDIR /app
-ENV NODE_ENV=production
-
-# Install only runtime essentials
-RUN apk add --no-cache openssl
 
 # Copy built application
 COPY --from=builder /app/dist ./dist
@@ -36,7 +28,6 @@ COPY package.json ./
 
 # Install only essential runtime dependencies
 RUN npm install --omit=dev --omit=optional --no-audit --no-fund --no-save \
-    @nestjs/core @nestjs/common @nestjs/platform-express @prisma/client \
-    && npm cache clean --force
+    @nestjs/core @nestjs/common @nestjs/platform-express @prisma/client
 
-CMD ["sh", "-c", "npx prisma migrate deploy; npx prisma db push; node dist/main.js"]
+CMD ["dist/main.js"]
