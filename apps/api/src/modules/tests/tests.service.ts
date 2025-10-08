@@ -11,7 +11,40 @@ export class TestsService {
 
   async listTemplates() {
     const existing = await this.prisma.testTemplate.findMany({ orderBy: { createdAt: 'desc' } });
-    if (existing.length > 0) return existing;
+    if (existing.length > 0) {
+      // Normalize legacy English option values to Persian in-place (one-time fix)
+      for (const t of existing) {
+        const qs: any[] = (t as any).questions || [];
+        let changed = false;
+        const mapped = qs.map((q: any) => {
+          if (!q?.options) return q;
+          const opts = (q.options || []).map((o: any) => {
+            let v = o.value;
+            // common
+            if (v === 'never') v = 'هرگز';
+            if (v === 'sometimes') v = 'گاهی';
+            if (v === 'often') v = 'اغلب';
+            if (v === 'no') v = 'خیر';
+            if (v === 'light') v = 'خفیف';
+            if (v === 'heavy') v = 'زیاد';
+            if (v === 'monthly') v = 'ماهانه';
+            if (v === 'weekly') v = 'هفتگی';
+            if (v === 'daily') v = 'روزانه';
+            if (v === '1-2') v = '۱-۲';
+            if (v === '3-4') v = '۳-۴';
+            if (v === '5-6') v = '۵-۶';
+            if (v === '7+') v = '۷+';
+            if (v !== o.value) changed = true;
+            return { ...o, value: v };
+          });
+          return { ...q, options: opts };
+        });
+        if (changed) {
+          await this.prisma.testTemplate.update({ where: { id: t.id }, data: { questions: mapped } });
+        }
+      }
+      return this.prisma.testTemplate.findMany({ orderBy: { createdAt: 'desc' } });
+    }
     // Seed minimal templates if database is empty (first-run safety)
     await this.prisma.testTemplate.upsert({
       where: { id: 'liver-template' },
