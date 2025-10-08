@@ -90,8 +90,8 @@ say "Seeding database (dev only)..."
 compose exec -T api npm run prisma:seed || warn "Seed script returned non-zero (might already be seeded)"
 ok "Seed complete"
 
-say "Creating admin user (admin@example.com / Admin@123)..."
-compose exec -T api node -e "(async()=>{const bcrypt=require('bcrypt');const {PrismaClient}=require('@prisma/client');const p=new PrismaClient();const pw=await bcrypt.hash('Admin@123',10);await p.user.upsert({where:{email:'admin@example.com'},update:{role:'admin'},create:{name:'ادمین',family:'سیستم',phone:'09999999999',email:'admin@example.com',passwordHash:pw,role:'admin'}});console.log('admin ready');process.exit(0)})()" || warn "Admin creation skipped"
+say "Creating admin user (admin@example.com / f26560291b)..."
+compose exec -T api node -e "(async()=>{const bcrypt=require('bcrypt');const {PrismaClient}=require('@prisma/client');const p=new PrismaClient();const pw=await bcrypt.hash('f26560291b',10);await p.user.upsert({where:{email:'admin@example.com'},update:{role:'admin'},create:{name:'ادمین',family:'سیستم',phone:'09999999999',email:'admin@example.com',passwordHash:pw,role:'admin'}});console.log('admin ready');process.exit(0)})()" || warn "Admin creation skipped"
 ok "Admin ready"
 
 say "URLs"

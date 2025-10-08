@@ -18,6 +18,14 @@ export default function LoginPage() {
       const tokens = await res.json();
       localStorage.setItem('accessToken', tokens.accessToken);
       localStorage.setItem('refreshToken', tokens.refreshToken);
+      // اگر کاربر ادمین باشد، به داشبورد ادمین هدایت شود
+      try {
+        const payload = JSON.parse(atob(tokens.accessToken.split('.')[1])) as any;
+        if (payload?.role === 'admin') {
+          window.location.href = '/admin/dashboard';
+          return;
+        }
+      } catch {}
       window.location.href = '/';
     } catch {
       setError('اتصال به سرور برقرار نشد');
