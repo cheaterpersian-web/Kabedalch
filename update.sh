@@ -24,25 +24,31 @@ npm install
 echo "🔨 Build پروژه..."
 npm run build
 
-# اجرای migrations
-echo "🗄️ اجرای migrations..."
-cd apps/api
-npx prisma migrate deploy
-cd ../..
-
-# Restart سرویس‌ها
-echo "🔄 Restart سرویس‌ها..."
+# راه‌اندازی database
+echo "🗄️ راه‌اندازی database..."
 
 # بررسی Docker Compose
 if command -v docker-compose &> /dev/null; then
-    echo "🐳 Restart با Docker Compose..."
+    echo "🐳 راه‌اندازی database با Docker Compose..."
+    docker-compose up -d postgres redis minio
+    
+    echo "⏳ منتظر راه‌اندازی database..."
+    sleep 10
+    
+    # اجرای migrations
+    echo "🔄 اجرای migrations..."
+    cd apps/api
+    npx prisma migrate deploy
+    cd ../..
+    
+    echo "🔄 Restart سرویس‌ها..."
     docker-compose down
     docker-compose up -d --build
 elif command -v pm2 &> /dev/null; then
     echo "⚡ Restart با PM2..."
     pm2 restart all
 else
-    echo "⚠️ لطفاً سرویس‌ها را دستی restart کنید"
+    echo "⚠️ لطفاً database و سرویس‌ها را دستی راه‌اندازی کنید"
 fi
 
 echo "✅ Update کامل شد!"

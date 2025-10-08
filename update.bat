@@ -23,23 +23,29 @@ REM Build پروژه
 echo 🔨 Build پروژه...
 npm run build
 
-REM اجرای migrations
-echo 🗄️ اجرای migrations...
-cd apps\api
-npx prisma migrate deploy
-cd ..\..
-
-REM Restart سرویس‌ها
-echo 🔄 Restart سرویس‌ها...
+REM راه‌اندازی database
+echo 🗄️ راه‌اندازی database...
 
 REM بررسی Docker Compose
 docker-compose --version >nul 2>&1
 if %errorlevel% equ 0 (
-    echo 🐳 Restart با Docker Compose...
+    echo 🐳 راه‌اندازی database با Docker Compose...
+    docker-compose up -d postgres redis minio
+    
+    echo ⏳ منتظر راه‌اندازی database...
+    timeout /t 10 /nobreak >nul
+    
+    REM اجرای migrations
+    echo 🔄 اجرای migrations...
+    cd apps\api
+    npx prisma migrate deploy
+    cd ..\..
+    
+    echo 🔄 Restart سرویس‌ها...
     docker-compose down
     docker-compose up -d --build
 ) else (
-    echo ⚠️ لطفاً سرویس‌ها را دستی restart کنید
+    echo ⚠️ لطفاً database و سرویس‌ها را دستی راه‌اندازی کنید
 )
 
 echo ✅ Update کامل شد!

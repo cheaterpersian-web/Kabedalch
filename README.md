@@ -48,10 +48,15 @@ docker compose exec api npm run prisma:seed
 # Update خودکار
 ./update.sh
 
+# راه‌اندازی database
+./setup-database.sh
+
 # یا دستی
 git pull origin main
 npm install
 npm run build
+docker-compose up -d postgres redis minio
+cd apps/api && npx prisma migrate deploy && cd ../..
 docker-compose down && docker-compose up -d --build
 ```
 
