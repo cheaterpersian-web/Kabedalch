@@ -1,23 +1,32 @@
-# API Dockerfile
-FROM node:20-bookworm-slim AS deps
+# API Dockerfile - Simplified approach
+FROM node:20-alpine AS builder
 WORKDIR /app
-COPY package.json package-lock.json* .npmrc* ./
-RUN npm ci || npm install
 
-FROM node:20-bookworm-slim AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Install system dependencies
+RUN apk add --no-cache openssl
+
+# Copy package files
+COPY package.json ./
+
+# Install all dependencies
+RUN npm install --no-audit --no-fund
+
+# Copy source and build
 COPY . .
-RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates && rm -rf /var/lib/apt/lists/* \
-  && npx prisma generate \
-  && npm run build
+RUN npx prisma generate && npx nest build
 
-FROM node:20-bookworm-slim AS runner
+# Production stage
+FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates && rm -rf /var/lib/apt/lists/*
+
+# Install system dependencies
+RUN apk add --no-cache openssl
+
+# Copy built application
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
 COPY package.json ./
+
 CMD ["sh", "-c", "npx prisma migrate deploy; npx prisma db push; node dist/main.js"]

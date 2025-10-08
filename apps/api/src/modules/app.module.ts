@@ -12,7 +12,6 @@ import { ConsultationsModule } from './consultations/consultations.module';
 import { AdminModule } from './admin/admin.module';
 // import { UploadsModule } from './uploads/uploads.module';
 import { UsersModule } from './users/users.module';
-import { CmsController } from './cms/cms.controller';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/jwt-auth.guard';
 import { HealthController } from './health.controller';
@@ -35,6 +34,7 @@ import { SecurityController } from './common/security.controller';
     WebhooksModule,
     ConsultationsModule,
     AdminModule,
+    // UploadsModule,
     UsersModule,
   ],
   controllers: [HealthController, SecurityController],

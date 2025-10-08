@@ -133,9 +133,9 @@ export class TestsService {
       else if (score <= 14) grade = 'Grade 2 (متوسط)';
       else grade = 'Grade 3 (شدید)';
     } else if (template.type === 'alcohol') {
-      if (score <= 7) grade = 'Low Risk';
-      else if (score <= 15) grade = 'Moderate Risk';
-      else grade = 'High Risk';
+      if (score <= 7) grade = 'کم‌خطر';
+      else if (score <= 15) grade = 'خطر متوسط';
+      else grade = 'پرخطر';
     }
 
     // Simple mapping: choose first matching package by tag
@@ -185,6 +185,7 @@ export class TestsService {
       if (grade.includes('خطر متوسط')) return 'مصرف در محدوده خطر متوسط. کاهش مصرف و مشاوره تخصصی توصیه می‌شود.';
       if (grade.includes('پرخطر')) return 'مصرف پرخطر. ارزیابی تخصصی و برنامه ترک تحت نظر کارشناس توصیه می‌شود.';
     }
-    return '';
+    // Fallback description to avoid empty final answers in edge cases
+    return 'نتیجه ارزیابی آماده است. برای دریافت راهنمایی دقیق‌تر، از پکیج‌های پیشنهادی و مشاوره تخصصی استفاده کنید.';
   }
 }
