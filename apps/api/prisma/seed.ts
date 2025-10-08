@@ -70,7 +70,6 @@ async function main() {
         { id: 'q10', text: 'سابقه مصرف الکل', type: 'single', weight: 2, options: [
           { value: 'ندارم', score: 0 }, { value: 'گاهی', score: 1 }, { value: 'زیاد', score: 3 }
         ]},
-        { id: 'q11', text: 'دور کمر (سانتی‌متر)', type: 'number', weight: 1.5 },
         { id: 'q12', text: 'مصرف غذاهای سرخ‌کردنی/فست‌فود', type: 'single', weight: 1, options: [
           { value: 'کم', score: 0 }, { value: 'متوسط', score: 1 }, { value: 'زیاد', score: 2 }
         ]},
@@ -123,7 +122,6 @@ async function main() {
         { id: 'q10', text: 'سابقه مصرف الکل', type: 'single', weight: 2, options: [
           { value: 'ندارم', score: 0 }, { value: 'گاهی', score: 1 }, { value: 'زیاد', score: 3 }
         ]},
-        { id: 'q11', text: 'دور کمر (سانتی‌متر)', type: 'number', weight: 1.5 },
         { id: 'q12', text: 'مصرف غذاهای سرخ‌کردنی/فست‌فود', type: 'single', weight: 1, options: [
           { value: 'کم', score: 0 }, { value: 'متوسط', score: 1 }, { value: 'زیاد', score: 2 }
         ]},
