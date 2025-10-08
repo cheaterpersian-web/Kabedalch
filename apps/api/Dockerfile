@@ -15,7 +15,6 @@ RUN npm install --no-audit --no-fund \
 
 # Copy source and build
 COPY . .
-RUN find . -name "uploads*" -type f
 RUN npx prisma generate && npx nest build
 
 # Clean up after build
