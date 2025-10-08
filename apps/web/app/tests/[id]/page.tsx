@@ -10,12 +10,9 @@ export default function TestRunner() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/proxy/api/tests/templates`)
+    fetch(`/api/proxy/api/tests/${id}`)
       .then((r) => r.json())
-      .then((t) => {
-        const found = (t || []).find((x: any) => x.id === id) || (t || [])[0];
-        setTemplate(found || null);
-      })
+      .then((t) => setTemplate(t || null))
       .catch(() => setTemplate(null));
   }, [id]);
 

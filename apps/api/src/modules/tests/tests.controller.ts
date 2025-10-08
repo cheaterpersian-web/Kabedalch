@@ -25,6 +25,12 @@ export class TestsController {
     return this.service.submit(testId, body, userId);
   }
 
+  @Get(':testId')
+  @Public()
+  async getTemplate(@Param('testId') testId: string) {
+    return this.service.findTemplateOrFirst(testId);
+  }
+
   @Get('results/:userId')
   results(@Param('userId') userId: string, @Req() req: any) {
     const caller = req.user;

@@ -92,6 +92,13 @@ export class TestsService {
     return this.prisma.testTemplate.findMany({ orderBy: { createdAt: 'desc' } });
   }
 
+  async findTemplateOrFirst(id: string) {
+    const tpl = await this.prisma.testTemplate.findUnique({ where: { id } });
+    if (tpl) return tpl;
+    const first = await this.prisma.testTemplate.findFirst({ orderBy: { createdAt: 'asc' } });
+    return first;
+  }
+
   async submit(testId: string, payload: SubmitPayload, userId?: string) {
     const template = await this.prisma.testTemplate.findUnique({ where: { id: testId } });
     if (!template) throw new Error('Test not found');
