@@ -13,10 +13,11 @@ describe('TestsService scoring', () => {
       ], scoringLogic: {}, createdAt: new Date(),
     } as any);
     jest.spyOn(prisma.package, 'findMany').mockResolvedValue([{ id: 'p', tags: [] }] as any);
+    jest.spyOn(prisma.package, 'findUnique').mockResolvedValue({ id: 'p', title: 'Test Package' } as any);
     jest.spyOn(prisma.testResult, 'create').mockResolvedValue({ id: 'r' } as any);
 
     const res = await service.submit('t', { answers: { q1: 'a' } });
     expect(res.score).toBeGreaterThanOrEqual(2);
-    expect(['نرمال','خفیف','متوسط','شدید']).toContain(res.grade);
+    expect(['Grade 0 (نرمال)','Grade 1 (خفیف)','Grade 2 (متوسط)','Grade 3 (شدید)']).toContain(res.grade);
   });
 });
