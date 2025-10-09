@@ -42,7 +42,7 @@ async function handler(req: Request, { params }: { params: { path: string[] } })
     redirect: 'manual',
   } as any;
 
-  if (body !== undefined) (init as any).duplex = 'half';
+  // Note: do NOT set duplex; Next.js runtime/node fetch handles streaming/body
 
   try {
     const res = await fetch(targetUrl, init as any);
