@@ -95,6 +95,14 @@ export class TestsService {
   async findTemplateOrFirst(id: string) {
     const tpl = await this.prisma.testTemplate.findUnique({ where: { id } });
     if (tpl) return tpl;
+
+    // Ensure templates exist (seed on first access if DB is empty)
+    const anyExisting = await this.prisma.testTemplate.findFirst();
+    if (!anyExisting) {
+      // listTemplates performs one-time normalization and seeds defaults when empty
+      await this.listTemplates();
+    }
+
     const first = await this.prisma.testTemplate.findFirst({ orderBy: { createdAt: 'asc' } });
     return first;
   }
