@@ -10,22 +10,48 @@ export default function TestRunner() {
   const [submitting, setSubmitting] = useState(false);
   const [i, setI] = useState(0);
   const [fading, setFading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setError(null);
+    setTemplate(null);
+    setResult(null);
+    setI(0);
     fetch(`/api/proxy/api/tests/${id}`)
-      .then((r) => r.json())
-      .then((t) => setTemplate(t || null))
-      .catch(() => setTemplate(null));
+      .then(async (r) => {
+        if (!r.ok) throw new Error('bad_status');
+        const t = await r.json();
+        if (t && Array.isArray(t?.questions) && typeof t?.name === 'string') {
+          setTemplate(t);
+        } else {
+          throw new Error('invalid_template');
+        }
+      })
+      .catch(() => {
+        setTemplate(null);
+        setError('خطا در دریافت تست. لطفاً دوباره تلاش کنید.');
+      });
   }, [id]);
 
   const submit = async () => {
     setSubmitting(true);
     try {
+      setError(null);
       const r = await fetch(`/api/proxy/api/tests/${id}/submit`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answers })
       });
+      if (!r.ok) {
+        setResult(null);
+        setError('ارسال نتیجه با خطا مواجه شد.');
+        return;
+      }
       const data = await r.json();
-      setResult(data);
+      if (data && typeof data.score === 'number' && data.grade) {
+        setResult(data);
+      } else {
+        setResult(null);
+        setError('پاسخ نامعتبر از سرور دریافت شد.');
+      }
       if (typeof window !== 'undefined' && (window as any).gtag) {
         (window as any).gtag('event', 'test_submit', { test_id: id, score: data.score, grade: data.grade });
       }
@@ -34,7 +60,13 @@ export default function TestRunner() {
     }
   };
 
-  if (!template) return <div className="container px-3 py-8">تستی یافت نشد. <a className="text-blue-600 underline" href="/tests">بازگشت</a></div>;
+  if (!template) return (
+    <div className="container px-3 py-8 space-y-3">
+      <div>تستی یافت نشد.</div>
+      {error && <div className="text-red-600 text-sm">{error}</div>}
+      <a className="text-blue-600 underline" href="/tests">بازگشت</a>
+    </div>
+  );
 
   const total = template?.questions?.length || 0;
 
@@ -118,7 +150,7 @@ export default function TestRunner() {
           </button>
         </div>
       </div>
-      {result && (
+      {result && typeof result.score === 'number' && result.grade && (
         <div className="border rounded p-4 space-y-2">
           <div>نمره: {result.score}</div>
           <div>نتیجه: {result.grade}</div>
@@ -127,6 +159,9 @@ export default function TestRunner() {
             <a className="text-blue-600 underline" href={`/packages/${result.recommendedPackages[0].id}`}>پکیج پیشنهادی</a>
           )}
         </div>
+      )}
+      {!result && error && (
+        <div className="text-red-600 text-sm">{error}</div>
       )}
     </div>
   );
