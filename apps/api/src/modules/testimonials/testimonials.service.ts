@@ -18,7 +18,7 @@ export class TestimonialsService {
     }));
   }
 
-  async submit(input: { userName: string; phone: string; message: string; imageBeforeUrl?: string; imageAfterUrl?: string; hcaptchaToken?: string }) {
+  async submit(input: { userName: string; phone: string; message: string; imageBeforeUrl?: string; imageAfterUrl?: string; videoUrl?: string; hcaptchaToken?: string }) {
     const ok = await verifyHCaptcha(input.hcaptchaToken);
     if (!ok) return { ok: false, error: 'captcha' };
     const phoneMasked = this.maskPhone(input.phone);
@@ -31,6 +31,7 @@ export class TestimonialsService {
         message: input.message,
         imageBeforeUrl: input.imageBeforeUrl,
         imageAfterUrl: input.imageAfterUrl,
+        videoUrl: input.videoUrl,
         approved: false,
       },
     });
