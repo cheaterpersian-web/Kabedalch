@@ -144,7 +144,6 @@ export default function TestRunner() {
       <div className="flex items-center justify-between gap-3">
         <button onClick={() => go(-1)} disabled={i===0 || submitting} className="px-3 py-2 rounded border disabled:opacity-60">قبلی</button>
         <div className="flex items-center gap-2">
-          <button onClick={submit} disabled={submitting} className="px-3 py-2 rounded border disabled:opacity-60">ثبت نتیجه</button>
           <button onClick={onNext} disabled={!current || !isAnswered(current) || submitting} className="px-4 py-2 rounded bg-green-600 text-white disabled:opacity-60">
             {i < total - 1 ? 'بعدی' : (submitting ? 'در حال ارسال...' : 'پایان و ثبت')}
           </button>
