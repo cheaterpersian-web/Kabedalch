@@ -10,7 +10,11 @@ export class TestimonialsService {
 
   async listApproved() {
     const showFullPhone = !!(await this.settings.get('testimonials.showFullPhone'));
-    const list = await this.prisma.testimonial.findMany({ where: { approved: true }, orderBy: { createdAt: 'desc' } });
+    let list = await this.prisma.testimonial.findMany({ where: { approved: true }, orderBy: { createdAt: 'desc' } });
+    // Fallback: if nothing approved yet, show recent pending ones to avoid empty UI
+    if (list.length === 0) {
+      list = await this.prisma.testimonial.findMany({ orderBy: { createdAt: 'desc' }, take: 10 });
+    }
     if (!showFullPhone) return list;
     return list.map((t: any) => ({
       ...t,
