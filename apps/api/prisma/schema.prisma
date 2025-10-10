@@ -109,6 +109,7 @@ model Testimonial {
   message              String
   imageBeforeUrl       String?
   imageAfterUrl        String?
+  videoUrl             String?
   approved             Boolean  @default(false)
   createdAt            DateTime @default(now())
 }

@@ -5,8 +5,10 @@ export default function TestimonialsSlider() {
   const [items, setItems] = useState<any[]>([]);
   const [i, setI] = useState(0);
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/testimonials`)
-      .then((r) => r.json()).then(setItems).catch(()=>{});
+    fetch(`/api/proxy/api/testimonials`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => setItems(Array.isArray(data) ? data : []))
+      .catch(()=>{});
   }, []);
   useEffect(() => {
     if (!items.length) return;
@@ -20,6 +22,11 @@ export default function TestimonialsSlider() {
       <div className="text-xs text-gray-500">{t.phoneMasked}</div>
       <div className="font-semibold">{t.userName}</div>
       <p className="text-sm text-gray-700 mt-2">{t.message}</p>
+      <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2 items-center">
+        {t.imageBeforeUrl && <img src={t.imageBeforeUrl} alt="before" className="rounded border mx-auto" />}
+        {t.imageAfterUrl && <img src={t.imageAfterUrl} alt="after" className="rounded border mx-auto" />}
+        {t.videoUrl && <video src={t.videoUrl} controls className="rounded border mx-auto" />}
+      </div>
     </div>
   );
 }

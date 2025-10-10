@@ -1,11 +1,10 @@
 export const dynamic = 'force-dynamic';
 async function fetchTestimonials() {
-  const env: any = process.env;
-  const base = env.API_INTERNAL_URL || env.NEXT_PUBLIC_API_BASE_URL || 'http://api:3001';
   try {
-    const res = await fetch(`${base}/api/testimonials`, { next: { revalidate: 60 } });
-    if (!res.ok) return [];
-    return res.json();
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/api/proxy/api/testimonials`, { next: { revalidate: 60 } });
+    if (!res.ok) return [] as any[];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
   } catch {
     return [];
   }
