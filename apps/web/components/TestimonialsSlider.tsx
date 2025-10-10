@@ -5,8 +5,10 @@ export default function TestimonialsSlider() {
   const [items, setItems] = useState<any[]>([]);
   const [i, setI] = useState(0);
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'}/api/testimonials`)
-      .then((r) => r.json()).then(setItems).catch(()=>{});
+    fetch(`/api/proxy/api/testimonials`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => setItems(Array.isArray(data) ? data : []))
+      .catch(()=>{});
   }, []);
   useEffect(() => {
     if (!items.length) return;
