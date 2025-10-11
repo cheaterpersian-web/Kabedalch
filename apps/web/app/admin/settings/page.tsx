@@ -20,7 +20,13 @@ export default function AdminSettingsPage() {
   ];
 
   const fetchOne = async (key: string, token: string) => {
-    const res = await fetch(`/api/proxy/api/admin/settings/${key}`, { headers: { Authorization: `Bearer ${token}` } });
+    let res = await fetch(`/api/proxy/api/admin/settings/${key}`, { headers: { Authorization: `Bearer ${token}` } });
+    if (res.status === 401) {
+      const refreshed = await refreshAccessToken();
+      if (!refreshed) return null;
+      const newToken = localStorage.getItem('accessToken') || '';
+      res = await fetch(`/api/proxy/api/admin/settings/${key}`, { headers: { Authorization: `Bearer ${newToken}` } });
+    }
     if (!res.ok) return null;
     return res.json();
   };
@@ -42,14 +48,45 @@ export default function AdminSettingsPage() {
 
   const save = async (key: string, value: any) => {
     setError(null);
-    const token = localStorage.getItem('accessToken');
+    let token = localStorage.getItem('accessToken');
     if (!token) { setError('ابتدا وارد شوید.'); return; }
-    const res = await fetch(`/api/proxy/api/admin/settings/${key}`, {
+    let res = await fetch(`/api/proxy/api/admin/settings/${key}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ value }),
     });
+    if (res.status === 401) {
+      const refreshed = await refreshAccessToken();
+      if (!refreshed) { setError('نشست شما منقضی شده است. دوباره وارد شوید.'); return; }
+      token = localStorage.getItem('accessToken');
+      res = await fetch(`/api/proxy/api/admin/settings/${key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ value }),
+      });
+    }
     if (!res.ok) setError('خطا در ذخیره تنظیمات.');
+  };
+
+  const refreshAccessToken = async (): Promise<boolean> => {
+    try {
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (!refreshToken) return false;
+      const res = await fetch('/api/proxy/api/auth/refresh', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken }),
+      });
+      if (!res.ok) return false;
+      const data = await res.json();
+      if (data?.accessToken) {
+        localStorage.setItem('accessToken', data.accessToken);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
   };
 
   const onChange = (k: string, v: any) => setValues((prev) => ({ ...prev, [k]: v }));
