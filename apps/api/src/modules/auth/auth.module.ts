@@ -9,6 +9,8 @@ import { RedisService } from '../common/redis.service';
 import { RateLimitGuard } from '../common/rate-limit.guard';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import { SettingsModule } from '../settings/settings.module';
+import { TelegramService } from '../common/telegram.service';
 
 @Module({
   imports: [
@@ -17,9 +19,10 @@ import { JwtStrategy } from './jwt.strategy';
       secret: process.env.JWT_SECRET || 'dev-secret',
       signOptions: { expiresIn: '15m' },
     }),
+    SettingsModule,
   ],
   controllers: [AuthController, TwoFaController],
-  providers: [AuthService, PrismaService, CryptoService, JwtStrategy, RedisService, RateLimitGuard],
+  providers: [AuthService, PrismaService, CryptoService, JwtStrategy, RedisService, RateLimitGuard, TelegramService],
   exports: [AuthService],
 })
 export class AuthModule {}
