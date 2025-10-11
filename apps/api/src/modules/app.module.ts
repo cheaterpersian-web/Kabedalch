@@ -15,6 +15,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/jwt-auth.guard';
 import { HealthController } from './health.controller';
 import { SecurityController } from './common/security.controller';
+import { TelegramService } from './common/telegram.service';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { SecurityController } from './common/security.controller';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    TelegramService,
   ],
 })
 export class AppModule {}

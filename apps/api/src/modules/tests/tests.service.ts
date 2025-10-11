@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
+import { TelegramService } from '../common/telegram.service';
 
 interface SubmitPayload {
   answers: Record<string, any>;
@@ -7,7 +8,7 @@ interface SubmitPayload {
 
 @Injectable()
 export class TestsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private telegram: TelegramService) {}
 
   async listTemplates() {
     const existing = await this.prisma.testTemplate.findMany({ orderBy: { createdAt: 'desc' } });
@@ -275,6 +276,11 @@ export class TestsService {
         recommendedPackageId,
       },
     });
+
+    // Notify admins
+    this.telegram
+      .sendMessage(`نتیجه تست: نوع ${template.type} — امتیاز ${score} — نتیجه ${grade}${userId ? ` — کاربر ${userId}` : ''}`)
+      .catch(() => {});
 
     const recommended = recommendedPackageId
       ? await this.prisma.package.findUnique({ where: { id: recommendedPackageId } })

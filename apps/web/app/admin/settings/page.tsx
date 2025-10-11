@@ -5,7 +5,7 @@ async function getSetting(key: string) {
 }
 
 export default async function AdminSettingsPage() {
-  const [showPhone, aghaKey, callbackBase, sentryDsn, csrfEnable, gaId, siteUrl, hcaptcha] = await Promise.all([
+  const [showPhone, aghaKey, callbackBase, sentryDsn, csrfEnable, gaId, siteUrl, hcaptcha, tgToken, tgAdmins] = await Promise.all([
     getSetting('testimonials.showFullPhone'),
     getSetting('payments.agha.apiKey'),
     getSetting('payments.callbackBase'),
@@ -14,6 +14,8 @@ export default async function AdminSettingsPage() {
     getSetting('analytics.gaId'),
     getSetting('site.url'),
     getSetting('hcaptcha.sitekey'),
+    getSetting('telegram.botToken'),
+    getSetting('telegram.adminChatIds'),
   ]);
   const api = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
   return (
@@ -25,6 +27,20 @@ export default async function AdminSettingsPage() {
         <form action={`${api}/api/admin/settings/testimonials.showFullPhone`} method="POST" className="flex gap-2 items-center">
           <label>نمایش شماره کامل</label>
           <input name="value" defaultValue={JSON.stringify(!!showPhone)} className="border rounded p-1" />
+          <button className="bg-blue-600 text-white px-3 py-1 rounded">ذخیره</button>
+        </form>
+      </section>
+
+      <section className="space-y-2">
+        <h2 className="font-semibold">تلگرام</h2>
+        <form action={`${api}/api/admin/settings/telegram.botToken`} method="POST" className="flex gap-2 items-center">
+          <label>Bot Token</label>
+          <input name="value" defaultValue={tgToken || ''} className="border rounded p-1 w-96" />
+          <button className="bg-blue-600 text-white px-3 py-1 rounded">ذخیره</button>
+        </form>
+        <form action={`${api}/api/admin/settings/telegram.adminChatIds`} method="POST" className="flex gap-2 items-center">
+          <label>Admin Chat IDs (JSON array)</label>
+          <input name="value" defaultValue={JSON.stringify(Array.isArray(tgAdmins) ? tgAdmins : [])} className="border rounded p-1 w-96" />
           <button className="bg-blue-600 text-white px-3 py-1 rounded">ذخیره</button>
         </form>
       </section>
