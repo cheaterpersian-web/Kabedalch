@@ -16,7 +16,9 @@ export default async function TestimonialsPage() {
     <div className="container py-8 space-y-4">
       <h1 className="text-2xl font-bold">رضایت مراجعین</h1>
       <div className="space-y-3">
-        {list.map((t: any) => (
+        {(list.length ? list : [
+          { id: 'demo', phoneMasked: '09*********', userName: 'کاربر نمونه', message: 'از خدمات بسیار راضی بودم. ممنون از تیم حرفه‌ای.' }
+        ]).map((t: any) => (
           <div key={t.id} className="border rounded p-3">
             <div className="text-sm text-gray-500">{t.phoneMasked}</div>
             <div className="font-semibold">{t.userName}</div>

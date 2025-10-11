@@ -15,7 +15,15 @@ export default function TestimonialsSlider() {
     const t = setInterval(() => setI((x) => (x + 1) % items.length), 4000);
     return () => clearInterval(t);
   }, [items]);
-  if (!items.length) return null;
+  if (!items.length) {
+    return (
+      <div className="rounded-xl border bg-white p-4 text-center">
+        <div className="text-xs text-gray-500">09*********</div>
+        <div className="font-semibold">کاربر نمونه</div>
+        <p className="text-sm text-gray-700 mt-2">از خدمات بسیار راضی بودم. ممنون از تیم حرفه‌ای.</p>
+      </div>
+    );
+  }
   const t = items[i];
   return (
     <div className="rounded-xl border bg-white p-4 text-center">
