@@ -27,6 +27,7 @@ async function bootstrap() {
         url.startsWith('/api/auth') ||
         url.startsWith('/api/health') ||
         url.startsWith('/api/admin') ||
+        url.startsWith('/api/consultations') ||
         url.startsWith('/api/uploads') ||
         url.startsWith('/api/testimonials') ||
         // allow docs and swagger assets
