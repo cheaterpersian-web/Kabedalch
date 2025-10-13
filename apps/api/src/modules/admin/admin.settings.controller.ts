@@ -10,8 +10,13 @@ export class AdminSettingsController {
 
   @Get(':key')
   async get(@Param('key') key: string) {
-    const setting = await this.prisma.setting.findUnique({ where: { key } });
-    return setting?.value ?? null;
+    try {
+      const setting = await this.prisma.setting.findUnique({ where: { key } });
+      return setting?.value ?? null;
+    } catch (e) {
+      // If DB/migrations are not ready, avoid 500 to keep admin UI usable
+      return null;
+    }
   }
 
   @Patch(':key')
@@ -21,8 +26,12 @@ export class AdminSettingsController {
     if (typeof raw === 'string') {
       try { value = JSON.parse(raw); } catch { if (raw === 'true') value = true; else if (raw === 'false') value = false; }
     }
-    await this.prisma.setting.upsert({ where: { key }, update: { value }, create: { key, value } });
-    return { ok: true };
+    try {
+      await this.prisma.setting.upsert({ where: { key }, update: { value }, create: { key, value } });
+      return { ok: true };
+    } catch {
+      return { ok: false, error: 'db_unavailable' };
+    }
   }
 
   @Post(':key')

@@ -45,6 +45,11 @@ if ! grep -q "^DATA_ENCRYPTION_KEY=" "$API_ENV" || [ -z "$(grep '^DATA_ENCRYPTIO
   ok "DATA_ENCRYPTION_KEY set"
 fi
 
+# Export DATA_ENCRYPTION_KEY to docker compose environment
+if [ -z "${DATA_ENCRYPTION_KEY:-}" ]; then
+  export DATA_ENCRYPTION_KEY="$(grep '^DATA_ENCRYPTION_KEY=' "$API_ENV" | cut -d'=' -f2- | tr -d '\r' || true)"
+fi
+
 # Create web env
 WEB_ENV="$ROOT_DIR/apps/web/.env.local"
 if [ ! -f "$WEB_ENV" ]; then
@@ -82,16 +87,21 @@ done
 echo
 ok "Postgres is ready"
 
-say "Applying Prisma migrations..."
-compose exec -T api npx prisma migrate deploy
-ok "Migrations applied"
+say "Applying Prisma schema..."
+if compose exec -T api npx prisma migrate deploy; then
+  ok "Migrations applied"
+else
+  warn "migrate deploy failed or no migrations; continuing"
+fi
+# Ensure schema exists even if there are no migrations
+compose exec -T api npx prisma db push || warn "db push failed"
 
 say "Seeding database (dev only)..."
 compose exec -T api npm run prisma:seed || warn "Seed script returned non-zero (might already be seeded)"
 ok "Seed complete"
 
-say "Creating admin user (admin@example.com / f26560291b)..."
-compose exec -T api node -e "(async()=>{const bcrypt=require('bcrypt');const {PrismaClient}=require('@prisma/client');const p=new PrismaClient();const pw=await bcrypt.hash('f26560291b',10);await p.user.upsert({where:{email:'admin@example.com'},update:{role:'admin'},create:{name:'ادمین',family:'سیستم',phone:'09999999999',email:'admin@example.com',passwordHash:pw,role:'admin'}});console.log('admin ready');process.exit(0)})()" || warn "Admin creation skipped"
+say "Creating admin user (admin@example.com / Admin@123)..."
+compose exec -T api node -e "(async()=>{const bcrypt=require('bcrypt');const {PrismaClient}=require('@prisma/client');const p=new PrismaClient();const pw=await bcrypt.hash('Admin@123',10);await p.user.upsert({where:{email:'admin@example.com'},update:{role:'admin'},create:{name:'ادمین',family:'سیستم',phone:'09999999999',email:'admin@example.com',passwordHash:pw,role:'admin'}});console.log('admin ready');process.exit(0)})()" || warn "Admin creation skipped"
 ok "Admin ready"
 
 say "URLs"

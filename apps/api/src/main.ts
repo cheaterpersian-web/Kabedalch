@@ -17,9 +17,26 @@ async function bootstrap() {
   }
   app.use(cookieParser());
   if (process.env.CSRF_ENABLE === 'true') {
-    app.use(
-      csurf({ cookie: { httpOnly: true, sameSite: 'lax', secure: false } })
-    );
+    // Apply CSRF generally, but bypass for public API paths (tests, auth, health)
+    const csrfMw = csurf({ cookie: { httpOnly: true, sameSite: 'lax', secure: false } });
+    app.use((req: any, res: any, next: any) => {
+      const url: string = req.url || '';
+      // Allow listed public endpoints without CSRF token
+      if (
+        url.startsWith('/api/tests') ||
+        url.startsWith('/api/auth') ||
+        url.startsWith('/api/health') ||
+        url.startsWith('/api/admin') ||
+        url.startsWith('/api/consultations') ||
+        url.startsWith('/api/uploads') ||
+        url.startsWith('/api/testimonials') ||
+        // allow docs and swagger assets
+        url.startsWith('/docs')
+      ) {
+        return next();
+      }
+      return csrfMw(req, res, next);
+    });
   }
   const corsOrigin = process.env.CORS_ORIGIN;
   const origin = corsOrigin

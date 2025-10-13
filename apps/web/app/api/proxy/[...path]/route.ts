@@ -42,13 +42,16 @@ async function handler(req: Request, { params }: { params: { path: string[] } })
     redirect: 'manual',
   } as any;
 
-  if (body !== undefined) (init as any).duplex = 'half';
+  // Note: do NOT set duplex; Next.js runtime/node fetch handles streaming/body
 
   try {
     const res = await fetch(targetUrl, init as any);
     const outHeaders = new Headers(res.headers);
-    return new Response(res.body, { status: res.status, statusText: res.statusText, headers: outHeaders });
+    // Buffer response to avoid streaming issues in edge/server runtime
+    const arrayBuffer = await res.arrayBuffer();
+    return new Response(arrayBuffer, { status: res.status, statusText: res.statusText, headers: outHeaders });
   } catch (e: any) {
+    console.error('proxy_error', { targetUrl, message: e?.message });
     return Response.json({ error: 'proxy_fetch_failed', message: e?.message || 'Upstream fetch failed' }, { status: 502 });
   }
 }

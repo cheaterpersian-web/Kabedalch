@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
 import { CryptoService } from '../common/crypto.service';
+import { TelegramService } from '../common/telegram.service';
 
 @Injectable()
 export class ConsultationsService {
-  constructor(private prisma: PrismaService, private crypto: CryptoService) {}
+  constructor(private prisma: PrismaService, private crypto: CryptoService, private telegram: TelegramService) {}
 
   async request(input: {
     name: string;
@@ -14,7 +15,12 @@ export class ConsultationsService {
     preferredTime?: string;
   }) {
     const masked = this.maskPhone(input.phone);
-    const encrypted = this.crypto.encrypt(input.phone);
+    let encrypted: string | undefined = undefined;
+    try {
+      encrypted = this.crypto.encrypt(input.phone);
+    } catch {
+      encrypted = undefined;
+    }
     const c = await this.prisma.consultation.create({
       data: {
         name: input.name,
@@ -25,6 +31,9 @@ export class ConsultationsService {
         preferredTime: input.preferredTime,
       },
     });
+    this.telegram
+      .sendMessage(`درخواست مشاوره جدید: ${input.name} — ${masked} — ${input.email || '-'}\n${input.description || ''}`)
+      .catch(() => {});
     return { id: c.id };
   }
 

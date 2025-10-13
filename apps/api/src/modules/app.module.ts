@@ -10,12 +10,12 @@ import { SettingsModule } from './settings/settings.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 import { ConsultationsModule } from './consultations/consultations.module';
 import { AdminModule } from './admin/admin.module';
-// import { UploadsModule } from './uploads/uploads.module';
 import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/jwt-auth.guard';
 import { HealthController } from './health.controller';
 import { SecurityController } from './common/security.controller';
+import { TelegramService } from './common/telegram.service';
 
 @Module({
   imports: [
@@ -34,7 +34,6 @@ import { SecurityController } from './common/security.controller';
     WebhooksModule,
     ConsultationsModule,
     AdminModule,
-    // UploadsModule,
     UsersModule,
   ],
   controllers: [HealthController, SecurityController],
@@ -43,6 +42,7 @@ import { SecurityController } from './common/security.controller';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    TelegramService,
   ],
 })
 export class AppModule {}

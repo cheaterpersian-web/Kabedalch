@@ -1,11 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../common/prisma.service';
+import { TelegramService } from '../common/telegram.service';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwt: JwtService, private prisma: PrismaService) {}
+  constructor(private jwt: JwtService, private prisma: PrismaService, private telegram: TelegramService) {}
 
   async register(input: {
     name: string;
@@ -20,6 +21,10 @@ export class AuthService {
     const user = await this.prisma.user.create({
       data: { name: input.name, family: input.family, phone: input.phone, email: input.email, passwordHash },
     });
+    // Notify admins in Telegram
+    this.telegram
+      .sendMessage(`ثبت‌نام جدید: ${user.name} ${user.family} / ${user.email} / ${user.phone}`)
+      .catch(() => {});
     return { id: user.id };
   }
 
