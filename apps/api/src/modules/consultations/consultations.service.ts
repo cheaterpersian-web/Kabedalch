@@ -15,7 +15,12 @@ export class ConsultationsService {
     preferredTime?: string;
   }) {
     const masked = this.maskPhone(input.phone);
-    const encrypted = this.crypto.encrypt(input.phone);
+    let encrypted: string | undefined = undefined;
+    try {
+      encrypted = this.crypto.encrypt(input.phone);
+    } catch {
+      encrypted = undefined;
+    }
     const c = await this.prisma.consultation.create({
       data: {
         name: input.name,
